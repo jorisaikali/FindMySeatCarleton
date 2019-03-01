@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">FindMySeat Carleton</string>
+    <string name="settingsDesc">Settings Button</string>
+    <string name="homeDesc">Home Button</string>
+    <string name="profileDesc">Profile Button</string>
+    <string name="updateDesc">Update Button</string>
+    <string name="findDesc">Find Button</string>
+    <string name="seatAmountOneDesc">One Chair Button</string>
+    <string name="seatAmountTwoDesc">Two Chairs Button</string>
+    <string name="seatAmountThreeDesc">Three Chairs Button</string>
+    <string name="seatAmountFourDesc">Four Chairs Button</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="username">Username</string>
+    <string name="your_username">Your username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+</resources>

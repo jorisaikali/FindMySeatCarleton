@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1e1e1e</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="windowBackground">#3e3e3e</color>
+
+    <color name="buttonPrimary">#848484</color>
+
+    <color name="carletonRed">#ab1f23</color>
+
+    <color name="white">#fff</color>
+</resources>
