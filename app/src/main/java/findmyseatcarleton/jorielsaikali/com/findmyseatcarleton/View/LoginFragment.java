@@ -2,6 +2,7 @@ package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,7 +49,7 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
+                final String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String[] args = {"LOGIN", username, password};
                 mViewModel.setArgs(args);
@@ -58,6 +59,12 @@ public class LoginFragment extends Fragment {
                         @Override
                         public void onChanged(@Nullable String s) {
                             Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+
+                            if (s.equals("SUCCESSFUL LOGIN")) {
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                intent.putExtra("username", username);
+                                startActivity(intent);
+                            }
                         }
                     });
                 } catch (NoSuchAlgorithmException e) {
