@@ -7,19 +7,14 @@ public class Repository {
 
     private final String TAG = "Repository";
 
-    private RemoteData rm = new RemoteData();
-    private MutableLiveData<String> result = new MutableLiveData<>();
+    private LiveData<String> result;
+
+    public Repository(String[] args) {
+        RemoteData rm = new RemoteData();
+        result = rm.getResult(args);
+    }
 
     public LiveData<String> getResult() {
         return result;
-    }
-
-    public LiveData<String> getData(String[] args) {
-        result.setValue(getResponse(args));
-        return getResult();
-    }
-
-    private String getResponse(String[] args) {
-        return rm.getResult(args);
     }
 }

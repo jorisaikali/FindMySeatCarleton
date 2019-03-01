@@ -68,13 +68,13 @@ public class HomeFragment extends Fragment {
         testRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Repository r = new Repository();
                 String[] args = {"REGISTER",
                         "testUsername",
                         "test@example.com",
                         "7543AD7C883707E7834FC3E45C55F2C6",
                         "55F885EDF77C1B7208606E750193B4CB508713495E024EFB8447B559559883CD9CD6FDA56ACDD3BE6855BA425300FF788B198E8B5701B9B1A2B9396D102504AC"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);
@@ -87,37 +87,36 @@ public class HomeFragment extends Fragment {
         testLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginModel lm = new LoginModel();
+                /*LoginModel lm = new LoginModel();
                 try {
                     String[] results = lm.encrypt("password1");
                     Log.i(TAG, "salt: " + results[1]);
                     Log.i(TAG, "hash: " + results[0]);
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
-                }
+                }*/
 
-                /* DATABASE/SERVER TESTING
-                Repository r = new Repository();
+                // DATABASE/SERVER TESTING
                 String[] args = {"LOGIN",
                         "testUsername",
                         "55F885EDF77C1B7208606E750193B4CB508713495E024EFB8447B559559883CD9CD6FDA56ACDD3BE6855BA425300FF788B198E8B5701B9B1A2B9396D102504AC"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);
                         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                     }
                 });
-                */
             }
         });
 
         testUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Repository r = new Repository();
                 String[] args = {"UPDATE", "1", "1"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);
@@ -130,9 +129,9 @@ public class HomeFragment extends Fragment {
         testFindButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Repository r = new Repository();
                 String[] args = {"FIND", "2", "8", "Level 1"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);
@@ -145,9 +144,9 @@ public class HomeFragment extends Fragment {
         testAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Repository r = new Repository();
                 String[] args = {"ADD ENTRY", "1"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);
@@ -160,9 +159,9 @@ public class HomeFragment extends Fragment {
         testResetEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Repository r = new Repository();
                 String[] args = {"RESET ENTRY"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);
@@ -175,9 +174,9 @@ public class HomeFragment extends Fragment {
         testSelectWinnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Repository r = new Repository();
                 String[] args = {"SELECT WINNER"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);
@@ -190,9 +189,9 @@ public class HomeFragment extends Fragment {
         testFloorListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Repository r = new Repository();
                 String[] args = {"FLOOR LIST", "8"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);
@@ -205,9 +204,9 @@ public class HomeFragment extends Fragment {
         testBuildingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Repository r = new Repository();
                 String[] args = {"BUILDING LIST"};
-                r.getData(args).observe(getViewLifecycleOwner(), new Observer<String>() {
+                Repository r = new Repository(args);
+                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Log.i(TAG, "s: " + s);

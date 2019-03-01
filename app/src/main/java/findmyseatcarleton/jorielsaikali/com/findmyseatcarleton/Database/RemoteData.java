@@ -21,15 +21,18 @@ public class RemoteData extends AsyncTask<String, Void, String> {
     private String link = "https://findmyseatcarleton.jorielsaikali.com/index.php";
     private MutableLiveData<String> result;
 
-    public String getResult(String[] args) {
+    public LiveData<String> getResult(String[] args) {
         if (result == null) {
             result = new MutableLiveData<>();
         }
 
         try {
             result.setValue(this.execute(args).get());
+            return result;
+
+            /*result.setValue(this.execute(args).get());
             Log.i(TAG, "result: " + result.getValue());
-            return result.getValue();
+            return result.getValue();*/
         } catch (InterruptedException ie) {
             return null;
         } catch (ExecutionException ee) {
