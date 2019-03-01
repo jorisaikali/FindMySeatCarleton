@@ -72,6 +72,17 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterFragment registerFragment = new RegisterFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.loginLayout, registerFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
 }
