@@ -22,6 +22,18 @@ public class EncryptionHelper {
         return generatedData;
     }
 
+    public String generateHash(String data, byte[] salt) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance(algorithm);
+        digest.reset();
+        digest.update(salt);
+
+        byte[] hash = digest.digest(data.getBytes());
+
+        String generatedData = bytesToStringHex(hash);
+
+        return generatedData;
+    }
+
     private static String bytesToStringHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int i = 0; i < bytes.length; i++) {

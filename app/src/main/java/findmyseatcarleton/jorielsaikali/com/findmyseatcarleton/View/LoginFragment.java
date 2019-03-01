@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.security.NoSuchAlgorithmException;
+
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
 
 public class LoginFragment extends Fragment {
@@ -51,12 +53,16 @@ public class LoginFragment extends Fragment {
                 String[] args = {"LOGIN", username, password};
                 mViewModel.setArgs(args);
 
-                mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
-                    @Override
-                    public void onChanged(@Nullable String s) {
-                        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                try {
+                    mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
+                        @Override
+                        public void onChanged(@Nullable String s) {
+                            Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
