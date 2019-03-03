@@ -2,6 +2,7 @@ package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel mViewModel;
 
     private ImageButton settingsButton, homeButton, profileButton;
+    private ImageButton updateButton, findButton;
 
     // -------------------- Testing ------------------- //
     private Button testRegisterButton, testLoginButton, testUpdateButton, testFindButton, testAddEntryButton, testResetEntryButton, testSelectWinnerButton;
@@ -43,6 +45,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
+
+        updateButton = view.findViewById(R.id.updateButton);
+        findButton = view.findViewById(R.id.findButton);
 
         settingsButton = view.findViewById(R.id.settingsButton);
         homeButton = view.findViewById(R.id.homeButton);
@@ -63,6 +68,14 @@ public class HomeFragment extends Fragment {
         settingsButton.setBackgroundColor(Color.TRANSPARENT);
         homeButton.setBackgroundColor(Color.TRANSPARENT);
         profileButton.setBackgroundColor(Color.TRANSPARENT);
+
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), BarcodeScannerActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // -------------------- testing -------------------- //
         testRegisterButton.setOnClickListener(new View.OnClickListener() {
