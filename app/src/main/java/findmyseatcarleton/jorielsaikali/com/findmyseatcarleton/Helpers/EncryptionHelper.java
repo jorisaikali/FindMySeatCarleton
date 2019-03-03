@@ -1,10 +1,14 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Helpers;
 
+import android.util.Log;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class EncryptionHelper {
+    private final String TAG = "EncryptionHelper";
+
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private String algorithm = "SHA-512";
 
@@ -22,10 +26,10 @@ public class EncryptionHelper {
         return generatedData;
     }
 
-    public String generateHash(String data, byte[] salt) throws NoSuchAlgorithmException {
+    public String generateHash(String data, String salt) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
         digest.reset();
-        digest.update(salt);
+        digest.update(hexStringToByteArray(salt));
 
         byte[] hash = digest.digest(data.getBytes());
 
@@ -42,6 +46,16 @@ public class EncryptionHelper {
             hexChars[i * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChars);
+    }
+
+    private static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
     }
 
     private static byte[] createSalt() {

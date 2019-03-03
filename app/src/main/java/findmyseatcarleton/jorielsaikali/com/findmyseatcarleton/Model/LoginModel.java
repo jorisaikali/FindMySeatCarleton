@@ -19,11 +19,11 @@ public class LoginModel {
         // ----------- Get salt from remote data ------------ //
         String[] getSaltArgs = {"GET SALT", args[1]};
         Repository getSaltRepo = new Repository(getSaltArgs);
-        String salt = getSaltRepo.getResult().getValue();
+        String salt = getSaltRepo.getResult().getValue().replace("\"", "");
         // -------------------------------------------------- //
 
         // ---------- Encrypt password user entered with salt ------------ //
-        String encryptedPassword = encrypt(args[2], salt.getBytes());
+        String encryptedPassword = encrypt(args[2], salt);
         // --------------------------------------------------------------- //
 
         args[2] = encryptedPassword; // Set args[2] to encrypted password so Repository can search with new encrypted password
@@ -38,7 +38,7 @@ public class LoginModel {
         return result;
     }
 
-    private String encrypt(String data, byte[] salt) throws NoSuchAlgorithmException {
+    private String encrypt(String data, String salt) throws NoSuchAlgorithmException {
         return encryptHelper.generateHash(data, salt);
     }
 }

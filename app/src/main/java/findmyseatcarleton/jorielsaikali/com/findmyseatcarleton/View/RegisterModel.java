@@ -1,6 +1,7 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
 
 import android.arch.lifecycle.LiveData;
+import android.util.Log;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -8,6 +9,8 @@ import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Database.Reposito
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Helpers.EncryptionHelper;
 
 public class RegisterModel {
+
+    private final String TAG = "RegisterModel";
 
     private EncryptionHelper encryptHelper = new EncryptionHelper();
     private LiveData<String> result;
@@ -17,6 +20,7 @@ public class RegisterModel {
         String[] encryptedData = null;
         try {
             encryptedData = encrypt(args[3]);
+
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
