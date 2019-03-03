@@ -25,10 +25,10 @@ public class LoginFragment extends Fragment {
     private Button loginButton, registerButton;
     private EditText usernameEditText, passwordEditText;
 
-    /*
+
     // TESTING
     private Button testMapButton;
-    */
+
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -44,10 +44,10 @@ public class LoginFragment extends Fragment {
         usernameEditText = view.findViewById(R.id.usernameEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
 
-        /*
+
         // TESTING
         testMapButton = view.findViewById(R.id.testMapButton);
-        */
+
 
         return view;
     }
@@ -95,7 +95,6 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        /*
         // TESTING
         testMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +103,7 @@ public class LoginFragment extends Fragment {
                 intent.putExtra("coordinatesString", "[{\"id\":\"1\",\"status\":\"1\",\"number_of_seats\":\"2\",\"building_ID\":\"8\",\"on_floor\":\"Level 1\",\"latitude\":\"45.382220\",\"longitude\":\"-75.697110\"},{\"id\":\"4\",\"status\":\"1\",\"number_of_seats\":\"2\",\"building_ID\":\"8\",\"on_floor\":\"Level 1\",\"latitude\":\"45.382171\",\"longitude\":\"-75.697103\"},{\"id\":\"7\",\"status\":\"1\",\"number_of_seats\":\"2\",\"building_ID\":\"8\",\"on_floor\":\"Level 1\",\"latitude\":\"45.382132\",\"longitude\":\"-75.697183\"}]");
                 startActivity(intent);
             }
-        });*/
+        });
     }
 
 }

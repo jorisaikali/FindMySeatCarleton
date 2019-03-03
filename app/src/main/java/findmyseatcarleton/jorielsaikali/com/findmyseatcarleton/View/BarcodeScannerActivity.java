@@ -1,9 +1,13 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
 
 import android.Manifest;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +18,7 @@ import android.widget.Toast;
 import com.google.zxing.Result;
 
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
+import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel.BarcodeScannerViewModel;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
@@ -112,6 +117,24 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
     @Override
     public void handleResult(Result rawResult) {
         String scanResult = rawResult.getText();
-        Toast.makeText(this, scanResult, Toast.LENGTH_LONG).show();
+
+        if (scanResult.contains("FindMySeatCarleton")) {
+            Toast.makeText(this, scanResult, Toast.LENGTH_LONG).show();
+
+            BarcodeScannerViewModel bsViewModel = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
+            bsViewModel.setQRData(scanResult.substring(18));
+
+            bsViewModel.getResult().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(@Nullable String s) {
+                    Toast.makeText(BarcodeScannerActivity.this, s, Toast.LENGTH_SHORT).show();
+                    scannerView.resumeCameraPreview(BarcodeScannerActivity.this);
+                }
+            });
+        }
+        else {
+            Toast.makeText(this, "Not a valid FindMySeat QR Code", Toast.LENGTH_SHORT).show();
+            scannerView.resumeCameraPreview(BarcodeScannerActivity.this);
+        }
     }
 }
