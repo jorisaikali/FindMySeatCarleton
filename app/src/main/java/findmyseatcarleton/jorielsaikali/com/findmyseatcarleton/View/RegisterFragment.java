@@ -49,6 +49,14 @@ public class RegisterFragment extends Fragment {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+
+                        if (s.equals("SUCCESS")) {
+                            LoginFragment loginFragment = new LoginFragment();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.loginLayout, loginFragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
                     }
                 });
             }
