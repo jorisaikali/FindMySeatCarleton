@@ -1,4 +1,4 @@
-package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
+package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Model;
 
 import android.arch.lifecycle.LiveData;
 import android.util.Log;

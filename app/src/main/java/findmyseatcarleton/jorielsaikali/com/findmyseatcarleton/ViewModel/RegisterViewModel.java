@@ -3,9 +3,7 @@ package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
-import java.security.NoSuchAlgorithmException;
-
-import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View.RegisterModel;
+import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Model.RegisterModel;
 
 public class RegisterViewModel extends ViewModel {
     private String[] args;
