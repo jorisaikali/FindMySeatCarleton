@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
+import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel.RegisterViewModel;
 
 public class RegisterFragment extends Fragment {
 

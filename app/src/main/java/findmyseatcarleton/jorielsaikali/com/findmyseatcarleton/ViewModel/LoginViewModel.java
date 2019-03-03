@@ -1,4 +1,4 @@
-package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
+package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
