@@ -77,6 +77,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        findButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SeatAmountFragment seatAmountFragment = new SeatAmountFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.homeLayout, seatAmountFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         // -------------------- testing -------------------- //
         testRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
