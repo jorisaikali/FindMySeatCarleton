@@ -14,6 +14,7 @@ import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
 
 public class BuildingListAdapter extends RecyclerView.Adapter<BuildingListAdapter.BuildingHolder> {
     private List<String> buildings = new ArrayList<>();
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -45,6 +46,24 @@ public class BuildingListAdapter extends RecyclerView.Adapter<BuildingListAdapte
         public BuildingHolder(@NonNull View itemView) {
             super(itemView);
             buildingNameTextView = itemView.findViewById(R.id.buildingNameTextView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(buildings.get(position));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String building);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

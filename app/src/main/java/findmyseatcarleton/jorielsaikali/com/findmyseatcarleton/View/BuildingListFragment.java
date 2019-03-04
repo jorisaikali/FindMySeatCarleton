@@ -65,11 +65,19 @@ public class BuildingListFragment extends Fragment {
         mViewModel.getBuildingResult().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(@Nullable List<String> strings) {
-                for (int i = 0; i < strings.size(); i++) {
-                    Log.i(TAG, "resultList.get(i): " + strings.get(i));
-                }
-
                 adapter.setBuildings(strings);
+            }
+        });
+
+        adapter.setOnItemClickListener(new BuildingListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String building) {
+                mViewModel.setBuilding(building);
+                FloorListFragment floorListFragment = new FloorListFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.homeLayout, floorListFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }
