@@ -1,13 +1,16 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
+import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel.FindSeatViewModel;
 
 
 /**
@@ -15,6 +18,11 @@ import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
  */
 public class FloorListFragment extends Fragment {
 
+    private FindSeatViewModel mViewModel;
+
+    public static FloorListFragment newInstance() {
+        return new FloorListFragment();
+    }
 
     public FloorListFragment() {
         // Required empty public constructor
@@ -28,4 +36,10 @@ public class FloorListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_floor_list, container, false);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(FindSeatViewModel.class);
+        // TODO: Use the ViewModel
+    }
 }
