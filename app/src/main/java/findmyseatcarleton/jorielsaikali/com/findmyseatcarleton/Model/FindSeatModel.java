@@ -18,8 +18,9 @@ public class FindSeatModel {
     private final String TAG = "FindSeatModel";
 
     private MutableLiveData<List<String>> resultList = new MutableLiveData<>();
+    private LiveData<String> result;
 
-    public FindSeatModel(String type, String floor) {
+    public FindSeatModel(String type, String building) {
         String[] args;
 
         if (type.equals("BUILDINGS")) {
@@ -31,7 +32,7 @@ public class FindSeatModel {
             args = new String[3];
             args[0] = "FLOOR LIST";
             args[1] = "floorList";
-            args[2] = floor;
+            args[2] = building;
         }
         else {
             args = new String[0];
@@ -74,10 +75,12 @@ public class FindSeatModel {
     // for finding, we need to POST a 'find', 'number_of_seats', 'buildingID', 'floor'
     public FindSeatModel(String seatAmount, String building, String floor) {
         String[] args = {"FIND", seatAmount, building, floor};
-
+        Repository repository = new Repository(args);
+        result = repository.getResult();
     }
 
     public LiveData<List<String>> getResultList() {
         return resultList;
     }
+    public LiveData<String> getResult() { return result; }
 }
