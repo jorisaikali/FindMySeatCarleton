@@ -14,6 +14,8 @@ import java.net.URLEncoder;
 import java.net.HttpURLConnection;
 import java.util.concurrent.ExecutionException;
 
+import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View.MainActivity;
+
 public class RemoteData extends AsyncTask<String, Void, String> {
 
     private final String TAG = "RemoteData";
@@ -64,7 +66,7 @@ public class RemoteData extends AsyncTask<String, Void, String> {
                 return update(args);
             case "ADD ENTRY":
                 //Log.i(TAG, addEntry(args));
-                return addEntry(args);
+                return addEntry();
             case "RESET ENTRY":
                 //Log.i(TAG, resetEntry(args));
                 return resetEntry();
@@ -245,17 +247,19 @@ public class RemoteData extends AsyncTask<String, Void, String> {
         }
     }
 
-    private String addEntry(String[] args) {
+    private String addEntry() {
         // for adding an entry, we need to POST a 'addEntry', 'userID'
         try {
             // ----------- Getting data passed ----------- //
-            String userID = args[1];
+            String username = MainActivity.username;
             // ------------------------------------------- //
 
             // ----------- Encoding data ---------- //
             String data = URLEncoder.encode("addEntry", "UTF-8");
-            data += "&" + URLEncoder.encode("userID", "UTF-8") + "=" + URLEncoder.encode(userID, "UTF-8");
+            data += "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
             // ------------------------------------ //
+
+            Log.i(TAG, "data: " + data);
 
             return serverResponsePost(data);
 

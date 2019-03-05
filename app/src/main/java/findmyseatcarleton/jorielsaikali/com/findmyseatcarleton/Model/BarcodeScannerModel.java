@@ -1,14 +1,18 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Model;
 
 import android.arch.lifecycle.LiveData;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Database.Repository;
+import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View.MainActivity;
 
 public class BarcodeScannerModel {
+
+    private final String TAG = "BarcodeScannerModel";
 
     private LiveData<String> result;
 
@@ -27,6 +31,11 @@ public class BarcodeScannerModel {
 
             Repository repository = new Repository(args);
             result = repository.getResult();
+
+            if (result != null) {
+                Repository addEntryRepo = new Repository(new String[]{"ADD ENTRY"});
+                addEntryRepo.getResult();
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
