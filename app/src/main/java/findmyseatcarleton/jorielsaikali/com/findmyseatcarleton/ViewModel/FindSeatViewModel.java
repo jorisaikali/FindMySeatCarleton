@@ -1,6 +1,7 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
@@ -12,16 +13,30 @@ public class FindSeatViewModel extends ViewModel {
 
     private final String TAG = "FindSeatViewModel";
 
-    private String seatAmount, building, floor;
+    private MutableLiveData<String> seatAmount = new MutableLiveData<>();
+    private MutableLiveData<String> building = new MutableLiveData<>();
+    private MutableLiveData<String> floor = new MutableLiveData<>();
 
-    public String getBuilding() { return building; }
+    public LiveData<String> getBuilding() { return building; }
 
-    public void setSeatAmount(String seatAmount) { this.seatAmount = seatAmount; Log.i(TAG, this.seatAmount); }
-    public void setBuilding(String building) { this.building = building; Log.i(TAG, this.building); }
-    public void setFloor(String floor) { this.floor = floor; Log.i(TAG, this.floor); }
+    public void setSeatAmount(String seatAmount) {
+        this.seatAmount.setValue(seatAmount);
+        Log.i(TAG, this.seatAmount.getValue());
+    }
+
+    public void setBuilding(String building) {
+        this.building.setValue(building);
+        Log.i(TAG, this.building.getValue());
+    }
+
+    public void setFloor(String floor) {
+        this.floor.setValue(floor);
+        Log.i(TAG, this.floor.getValue());
+    }
 
     public LiveData<String> getResult() {
-        FindSeatModel findSeatModel = new FindSeatModel(seatAmount, building, floor);
+        FindSeatModel findSeatModel = new FindSeatModel(seatAmount.getValue(), building.getValue(), floor.getValue());
+        Log.i(TAG, "data for find: " + seatAmount.getValue() + ", " + building.getValue() + ", " + floor.getValue());
         return findSeatModel.getResult();
     }
 
@@ -30,9 +45,9 @@ public class FindSeatViewModel extends ViewModel {
         return findSeatModel.getResultList();
     }
 
-    public LiveData<List<String>> getFloorResult() {
-        Log.i(TAG, "building: " + building);
-        FindSeatModel findSeatModel = new FindSeatModel("FLOORS", building);
+    public LiveData<List<String>> getFloorResult(String buildingName) {
+        Log.i(TAG, "building: " + buildingName);
+        FindSeatModel findSeatModel = new FindSeatModel("FLOORS", buildingName);
         return findSeatModel.getResultList();
     }
 }

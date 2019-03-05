@@ -29,6 +29,7 @@ public class BuildingListFragment extends Fragment {
     private final String TAG = "BuildingListFragment";
 
     private FindSeatViewModel mViewModel;
+    private BuildingListAdapter adapter;
 
     public static BuildingListFragment newInstance() {
         return new BuildingListFragment();
@@ -45,29 +46,12 @@ public class BuildingListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_building_list, container, false);
 
-
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(FindSeatViewModel.class);
-
-        RecyclerView recyclerView = getView().findViewById(R.id.buildingListRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.buildingListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        final BuildingListAdapter adapter = new BuildingListAdapter();
+        adapter = new BuildingListAdapter();
         recyclerView.setAdapter(adapter);
-
-        mViewModel.getBuildingResult().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
-            @Override
-            public void onChanged(@Nullable List<String> strings) {
-                adapter.setBuildings(strings);
-            }
-        });
 
         adapter.setOnItemClickListener(new BuildingListAdapter.OnItemClickListener() {
             @Override
@@ -80,5 +64,22 @@ public class BuildingListFragment extends Fragment {
                         .commit();
             }
         });
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(getActivity()).get(FindSeatViewModel.class);
+
+        mViewModel.getBuildingResult().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(@Nullable List<String> strings) {
+                adapter.setBuildings(strings);
+            }
+        });
+
+
     }
 }

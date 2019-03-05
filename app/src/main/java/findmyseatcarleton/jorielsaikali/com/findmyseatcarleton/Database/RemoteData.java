@@ -310,13 +310,15 @@ public class RemoteData extends AsyncTask<String, Void, String> {
         // for getting floor list, we need to POST a 'floorList', 'floorListBuilding'
         try {
             // ----------- Getting data passed ----------- //
-            String floorListBuildingID = args[1];
+            String floorListBuilding = args[2];
             // ------------------------------------------- //
 
             // ----------- Encoding data ---------- //
             String data = URLEncoder.encode("floorList", "UTF-8");
-            data += "&" + URLEncoder.encode("floorListBuilding", "UTF-8") + "=" + URLEncoder.encode(floorListBuildingID, "UTF-8");
+            data += "&" + URLEncoder.encode("floorListBuilding", "UTF-8") + "=" + URLEncoder.encode(floorListBuilding, "UTF-8");
             // ------------------------------------ //
+
+            Log.i(TAG, "data: " + data);
 
             return serverResponsePost(data);
 

@@ -29,6 +29,7 @@ public class FloorListFragment extends Fragment {
     private final String TAG = "FloorListFragment";
 
     private FindSeatViewModel mViewModel;
+    private String buildingName;
 
     public static FloorListFragment newInstance() {
         return new FloorListFragment();
@@ -50,7 +51,51 @@ public class FloorListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(FindSeatViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(FindSeatViewModel.class);
+
+        mViewModel.getBuilding().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                Log.i(TAG, "getBuilding.observe: " + s);
+                buildingName = s;
+
+                RecyclerView recyclerView = getView().findViewById(R.id.floorListRecyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setHasFixedSize(true);
+
+                final FloorListAdapter adapter = new FloorListAdapter();
+                recyclerView.setAdapter(adapter);
+
+                Log.i(TAG, "buildingName: " + s);
+
+                mViewModel.getFloorResult(s).observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+                    @Override
+                    public void onChanged(@Nullable List<String> strings) {
+                        for (int i = 0; i < strings.size(); i++) {
+                            Log.i(TAG, strings.get(i));
+                        }
+
+                        adapter.setFloors(strings);
+                    }
+                });
+
+                adapter.setOnItemClickListener(new FloorListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(String floor) {
+                        mViewModel.setFloor(floor);
+
+                        mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
+                            @Override
+                            public void onChanged(@Nullable String s) {
+                                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                                intent.putExtra("coordinatesString", s);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -59,41 +104,6 @@ public class FloorListFragment extends Fragment {
 
         Log.i(TAG, "FloorListFragment ONSTART");
 
-        RecyclerView recyclerView = getView().findViewById(R.id.floorListRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(true);
 
-        final FloorListAdapter adapter = new FloorListAdapter();
-        recyclerView.setAdapter(adapter);
-
-        String buildingName = mViewModel.getBuilding();
-        Log.i(TAG, "buildingName: " + buildingName);
-
-        mViewModel.getFloorResult().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
-            @Override
-            public void onChanged(@Nullable List<String> strings) {
-                for (int i = 0; i < strings.size(); i++) {
-                    Log.i(TAG, strings.get(i));
-                }
-
-                adapter.setFloors(strings);
-            }
-        });
-
-        adapter.setOnItemClickListener(new FloorListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(String floor) {
-                mViewModel.setFloor(floor);
-
-                mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
-                    @Override
-                    public void onChanged(@Nullable String s) {
-                        Intent intent = new Intent(getActivity(), MapsActivity.class);
-                        intent.putExtra("coordinatesString", s);
-                        startActivity(intent);
-                    }
-                });
-            }
-        });
     }
 }

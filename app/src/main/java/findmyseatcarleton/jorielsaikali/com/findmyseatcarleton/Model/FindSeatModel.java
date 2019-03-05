@@ -55,19 +55,29 @@ public class FindSeatModel {
             JSONArray jsonArray = jsonObject.getJSONArray("server_response");
 
             int index = 0;
-            while (index < jsonArray.length()) {
-                JSONObject jo = jsonArray.getJSONObject(index);
-                results.add(jo.getString("name"));
-                index++;
+
+            if (type.equals("BUILDINGS")) {
+                while (index < jsonArray.length()) {
+                    JSONObject jo = jsonArray.getJSONObject(index);
+                    results.add(jo.getString("name"));
+                    index++;
+                }
+            }
+            else if (type.equals("FLOORS")) {
+                while (index < jsonArray.length()) {
+                    String level = jsonArray.getString(index);
+                    results.add(level);
+                    index++;
+                }
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        /*for (int i = 0; i < results.size(); i++) {
+        for (int i = 0; i < results.size(); i++) {
             Log.i(TAG, "resultList.get(i): " + results.get(i));
-        }*/
+        }
 
         resultList.setValue(results);
     }
