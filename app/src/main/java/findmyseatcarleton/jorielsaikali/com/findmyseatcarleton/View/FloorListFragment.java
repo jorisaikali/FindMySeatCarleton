@@ -71,10 +71,6 @@ public class FloorListFragment extends Fragment {
                 mViewModel.getFloorResult(s).observe(getViewLifecycleOwner(), new Observer<List<String>>() {
                     @Override
                     public void onChanged(@Nullable List<String> strings) {
-                        for (int i = 0; i < strings.size(); i++) {
-                            Log.i(TAG, strings.get(i));
-                        }
-
                         adapter.setFloors(strings);
                     }
                 });
@@ -87,6 +83,8 @@ public class FloorListFragment extends Fragment {
                         mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                             @Override
                             public void onChanged(@Nullable String s) {
+                                Log.i(TAG, "getResult: " + s);
+
                                 Intent intent = new Intent(getActivity(), MapsActivity.class);
                                 intent.putExtra("coordinatesString", s);
                                 startActivity(intent);

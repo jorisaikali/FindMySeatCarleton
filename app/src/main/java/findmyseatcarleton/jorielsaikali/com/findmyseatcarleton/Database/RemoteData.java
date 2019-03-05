@@ -202,18 +202,18 @@ public class RemoteData extends AsyncTask<String, Void, String> {
     }
 
     private String find(String[] args) {
-        // for finding, we need to POST a 'find', 'number_of_seats', 'buildingID', 'floor'
+        // for finding, we need to POST a 'find', 'number_of_seats', 'building', 'floor'
         try {
             // ----------- Getting data passed ----------- //
             String numberOfSeats = args[1];
-            String buildingID = args[2];
+            String building = args[2];
             String floor = args[3];
             // ------------------------------------------- //
 
             // ----------- Encoding data ---------- //
             String data = URLEncoder.encode("find", "UTF-8");
             data += "&" + URLEncoder.encode("number_of_seats", "UTF-8") + "=" + URLEncoder.encode(numberOfSeats, "UTF-8");
-            data += "&" + URLEncoder.encode("buildingID", "UTF-8") + "=" + URLEncoder.encode(buildingID, "UTF-8");
+            data += "&" + URLEncoder.encode("building", "UTF-8") + "=" + URLEncoder.encode(building, "UTF-8");
             data += "&" + URLEncoder.encode("floor", "UTF-8") + "=" + URLEncoder.encode(floor, "UTF-8");
             // ------------------------------------ //
 

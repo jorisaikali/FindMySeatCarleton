@@ -62,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mapViewModel.setData(googleMap, coordinatesString);
         mMap = mapViewModel.getGoogleMap();
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         /*mMap = googleMap;
 

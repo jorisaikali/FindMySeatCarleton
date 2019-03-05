@@ -27,7 +27,7 @@ public class MapModel {
     public List<LatLng> getMarkerCoordinates() { return markerCoordinates; }
 
     private void shiftCamera(LatLng position) {
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 21.0f));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 19.0f));
     }
 
     private void addAllMarkers(List<LatLng> markers) {

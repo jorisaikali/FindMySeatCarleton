@@ -33,18 +33,18 @@ public class SeatAmountFragment extends Fragment {
         threeSeatButton = view.findViewById(R.id.threeSeatButton);
         fourSeatButton = view.findViewById(R.id.fourSeatButton);
 
+        oneSeatButton.setOnClickListener(new ButtonListener());
+        twoSeatButton.setOnClickListener(new ButtonListener());
+        threeSeatButton.setOnClickListener(new ButtonListener());
+        fourSeatButton.setOnClickListener(new ButtonListener());
+
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(FindSeatViewModel.class);
-
-        oneSeatButton.setOnClickListener(new ButtonListener());
-        twoSeatButton.setOnClickListener(new ButtonListener());
-        threeSeatButton.setOnClickListener(new ButtonListener());
-        fourSeatButton.setOnClickListener(new ButtonListener());
+        mViewModel = ViewModelProviders.of(getActivity()).get(FindSeatViewModel.class);
     }
 
     class ButtonListener implements View.OnClickListener {
