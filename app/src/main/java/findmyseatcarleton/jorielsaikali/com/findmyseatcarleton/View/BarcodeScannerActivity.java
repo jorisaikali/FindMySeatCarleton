@@ -5,17 +5,25 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel.BarcodeScannerViewModel;
@@ -33,6 +41,13 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
         super.onCreate(savedInstanceState);
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("AlreadySeenQRCodes", 0);
+        SharedPreferences.Editor editor = pref.edit();
+
+        List<String> seenQRCodes = new ArrayList<>(Arrays.asList(pref.getString("index0", ""), pref.getString("index1", "")));
+        BarcodeScannerViewModel bsViewModel = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
+        bsViewModel.setAlreadySeenQRCodes(seenQRCodes);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkPermission()) {
@@ -119,16 +134,28 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
         String scanResult = rawResult.getText();
 
         if (scanResult.contains("FindMySeatCarleton")) {
-            Toast.makeText(this, scanResult, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, scanResult, Toast.LENGTH_LONG).show();
 
-            BarcodeScannerViewModel bsViewModel = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
+            final BarcodeScannerViewModel bsViewModel = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
             bsViewModel.setQRData(scanResult.substring(18));
 
             bsViewModel.getResult().observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(@Nullable String s) {
-                    Toast.makeText(BarcodeScannerActivity.this, s, Toast.LENGTH_SHORT).show();
+                    if (!s.equals("REJECTED")) {
+                        Toast.makeText(BarcodeScannerActivity.this, s, Toast.LENGTH_SHORT).show();
+                    }
+
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("AlreadySeenQRCodes", 0);
+                    SharedPreferences.Editor editor = pref.edit();
+
+                    List<String> alreadySeenQRCodes = bsViewModel.getAlreadySeenQRCodes();
+                    editor.putString("index0", alreadySeenQRCodes.get(0));
+                    editor.putString("index1", alreadySeenQRCodes.get(1));
+                    editor.commit();
+
                     scannerView.resumeCameraPreview(BarcodeScannerActivity.this);
+
                 }
             });
         }
