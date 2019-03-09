@@ -33,17 +33,6 @@
                 android:src="@drawable/footer_user" />
 
             <ImageButton
-                android:id="@+id/homeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/homeDesc"
-                android:padding="15dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/footer_home" />
-
-            <ImageButton
                 android:id="@+id/settingsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

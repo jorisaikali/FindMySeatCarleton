@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel mViewModel;
 
-    private ImageButton settingsButton, homeButton, profileButton;
+    private ImageButton settingsButton, profileButton;
     private ImageButton updateButton, findButton;
 
     // -------------------- Testing ------------------- //
@@ -49,7 +49,6 @@ public class HomeFragment extends Fragment {
         findButton = view.findViewById(R.id.findButton);
 
         settingsButton = view.findViewById(R.id.settingsButton);
-        homeButton = view.findViewById(R.id.homeButton);
         profileButton = view.findViewById(R.id.profileButton);
 
         // -------------------- testing -------------------- //
@@ -58,7 +57,6 @@ public class HomeFragment extends Fragment {
         // ------------------------------------------------- //
 
         settingsButton.setBackgroundColor(Color.TRANSPARENT);
-        homeButton.setBackgroundColor(Color.TRANSPARENT);
         profileButton.setBackgroundColor(Color.TRANSPARENT);
 
         updateButton.setOnClickListener(new View.OnClickListener() {
