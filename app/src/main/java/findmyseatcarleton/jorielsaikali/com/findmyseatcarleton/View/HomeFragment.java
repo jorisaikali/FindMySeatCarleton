@@ -89,6 +89,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingsFragment settingsFragment = new SettingsFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.homeLayout, settingsFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         // -------------------- testing -------------------- //
         testResetEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
