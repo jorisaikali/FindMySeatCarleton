@@ -42,7 +42,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("AlreadySeenQRCodes", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(MainActivity.username, 0);
         SharedPreferences.Editor editor = pref.edit();
 
         List<String> seenQRCodes = new ArrayList<>(Arrays.asList(pref.getString("index0", ""), pref.getString("index1", "")));
@@ -146,7 +146,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
                         Toast.makeText(BarcodeScannerActivity.this, s, Toast.LENGTH_SHORT).show();
                     }
 
-                    SharedPreferences pref = getApplicationContext().getSharedPreferences("AlreadySeenQRCodes", 0);
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences(MainActivity.username, 0);
                     SharedPreferences.Editor editor = pref.edit();
 
                     List<String> alreadySeenQRCodes = bsViewModel.getAlreadySeenQRCodes();
