@@ -81,6 +81,8 @@ public class RemoteData extends AsyncTask<String, Void, String> {
                 return floorList(args);
             case "GET SALT":
                 return getSalt(args);
+            case "GET PROFILE DATA":
+                return getProfileData(args);
         }
 
         return null;
@@ -342,6 +344,27 @@ public class RemoteData extends AsyncTask<String, Void, String> {
             String data = URLEncoder.encode("getSalt", "UTF-8");
             data += "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
             // ------------------------------------ //
+
+            return serverResponsePost(data);
+
+        } catch (Exception e) {
+            return "Exception: " + e.getMessage();
+        }
+    }
+
+    private String getProfileData(String[] args) {
+        // for getting entries, we need to POST a 'profile' and 'username'
+        try {
+            // ----------- Getting data passed ----------- //
+            String username = args[1];
+            // ------------------------------------------- //
+
+            // ----------- Encoding data ---------- //
+            String data = URLEncoder.encode("profile", "UTF-8");
+            data += "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
+            // ------------------------------------ //
+
+            Log.i(TAG, "data: " + data);
 
             return serverResponsePost(data);
 

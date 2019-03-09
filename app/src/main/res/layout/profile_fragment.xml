@@ -48,12 +48,12 @@
         android:text="Current Entries: 0"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/TotalEntriesTextView"
+        app:layout_constraintBottom_toTopOf="@+id/totalEntriesTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/TotalEntriesTextView"
+        android:id="@+id/totalEntriesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

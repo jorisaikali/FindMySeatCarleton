@@ -80,6 +80,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileFragment profileFragment = new ProfileFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.homeLayout, profileFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         // -------------------- testing -------------------- //
         testResetEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
