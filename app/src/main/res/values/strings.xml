@@ -21,4 +21,12 @@
     <string name="register">Register</string>
     <string name="email">Email Address</string>
     <string name="logout">Logout</string>
+    <string name="change_password">Change Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="change_email">Change Email</string>
+    <string name="new_email">New Email</string>
+    <string name="confirm_email">Confirm Email</string>
+    <string name="submit">Submit</string>
 </resources>

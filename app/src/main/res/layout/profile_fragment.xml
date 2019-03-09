@@ -77,7 +77,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/logout_button"
+        android:background="@drawable/rounded_button"
         android:text="@string/logout"
         android:textAllCaps="false"
         android:textColor="@color/white"
