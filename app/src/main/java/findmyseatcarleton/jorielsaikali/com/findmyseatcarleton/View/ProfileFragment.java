@@ -2,6 +2,7 @@ package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel mViewModel;
     private TextView usernameTextView, emailTextView, currentEntriesTextView, totalEntriesTextView;
+    private Button logoutButton;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -33,6 +36,18 @@ public class ProfileFragment extends Fragment {
         emailTextView = view.findViewById(R.id.emailTextView);
         currentEntriesTextView = view.findViewById(R.id.currentEntriesTextView);
         totalEntriesTextView = view.findViewById(R.id.totalEntriesTextView);
+        logoutButton = view.findViewById(R.id.logoutButton);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.username = "";
+
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
