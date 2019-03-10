@@ -3,6 +3,7 @@ package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Database;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -53,36 +54,33 @@ public class RemoteData extends AsyncTask<String, Void, String> {
 
         switch(functionality) {
             case "REGISTER":
-                //Log.i(TAG, register(args));
                 return register(args);
             case "LOGIN":
-                //Log.i(TAG, login(args));
                 return login(args);
             case "FIND":
-                //Log.i(TAG, find(args));
                 return find(args);
             case "UPDATE":
-                //Log.i(TAG, update(args));
                 return update(args);
             case "ADD ENTRY":
-                //Log.i(TAG, addEntry(args));
                 return addEntry();
             case "RESET ENTRY":
-                //Log.i(TAG, resetEntry(args));
                 return resetEntry();
             case "SELECT WINNER":
-                //Log.i(TAG, selectWinnerAndEmail());
                 return selectWinnerAndEmail();
             case "BUILDING LIST":
-                //Log.i(TAG, buildingList());
                 return buildingList();
             case "FLOOR LIST":
-                //Log.i(TAG, floorList(args));
                 return floorList(args);
             case "GET SALT":
                 return getSalt(args);
             case "GET PROFILE DATA":
                 return getProfileData(args);
+            case "CONFIRM OLD PASSWORD":
+                return confirmPassword(args);
+            case "UPDATE PASSWORD":
+                return updatePassword(args);
+            case "UPDATE EMAIL":
+                return updateEmail(args);
         }
 
         return null;
@@ -364,7 +362,68 @@ public class RemoteData extends AsyncTask<String, Void, String> {
             data += "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
             // ------------------------------------ //
 
-            Log.i(TAG, "data: " + data);
+            return serverResponsePost(data);
+
+        } catch (Exception e) {
+            return "Exception: " + e.getMessage();
+        }
+    }
+
+    private String confirmPassword(String[] args) {
+        // for confirming password, we need to POST a 'confirmPassword', 'username', 'oldPassword'
+        try {
+            // ----------- Getting data passed ----------- //
+            String username = args[1];
+            String oldPassword = args[2];
+            // ------------------------------------------- //
+
+            // ----------- Encoding data ---------- //
+            String data = URLEncoder.encode("confirmPassword", "UTF-8");
+            data += "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
+            data += "&" + URLEncoder.encode("oldPassword", "UTF-8") + "=" + URLEncoder.encode(oldPassword, "UTF-8");
+            // ------------------------------------ //
+
+            return serverResponsePost(data);
+
+        } catch (Exception e) {
+            return "Exception: " + e.getMessage();
+        }
+    }
+
+    private String updatePassword(String[] args) {
+        // for updating password, we need to POST a 'updatePassword', 'username', 'newPassword'
+        try {
+            // ----------- Getting data passed ----------- //
+            String username = args[1];
+            String newPassword = args[2];
+            // ------------------------------------------- //
+
+            // ----------- Encoding data ---------- //
+            String data = URLEncoder.encode("updatePassword", "UTF-8");
+            data += "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
+            data += "&" + URLEncoder.encode("newPassword", "UTF-8") + "=" + URLEncoder.encode(newPassword, "UTF-8");
+            // ------------------------------------ //
+
+            return serverResponsePost(data);
+
+        } catch (Exception e) {
+            return "Exception: " + e.getMessage();
+        }
+    }
+
+    private String updateEmail(String[] args) {
+        // for updating email, we need to POST a 'updateEmail', 'username', 'newEmail'
+        try {
+            // ----------- Getting data passed ----------- //
+            String username = args[1];
+            String newEmail = args[2];
+            // ------------------------------------------- //
+
+            // ----------- Encoding data ---------- //
+            String data = URLEncoder.encode("updateEmail", "UTF-8");
+            data += "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
+            data += "&" + URLEncoder.encode("newEmail", "UTF-8") + "=" + URLEncoder.encode(newEmail, "UTF-8");
+            // ------------------------------------ //
 
             return serverResponsePost(data);
 
