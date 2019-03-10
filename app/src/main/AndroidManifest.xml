@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.MainActivity">
+        <activity android:name=".View.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -41,15 +42,18 @@
 
         <activity
             android:name=".View.MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".View.LoginActivity">
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity android:name=".View.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.BarcodeScannerActivity"></activity>
+        <activity android:name=".View.BarcodeScannerActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
