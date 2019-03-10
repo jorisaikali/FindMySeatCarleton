@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">FindMySeat Carleton</string>
+    <string name="app_name">FindMySeat <font fgcolor='#FFab1f23'>Carleton</font></string>
+    <string name="app_nickname">FindMySeat</string>
     <string name="settingsDesc">Settings Button</string>
     <string name="homeDesc">Home Button</string>
     <string name="profileDesc">Profile Button</string>
