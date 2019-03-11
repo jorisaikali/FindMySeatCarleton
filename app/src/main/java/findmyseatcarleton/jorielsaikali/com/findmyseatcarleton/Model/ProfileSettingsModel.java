@@ -95,6 +95,7 @@ public class ProfileSettingsModel {
     private void runChangeEmail(String username, String newEmail, String confirmEmail) {
         // --------- Check if newEmail and confirmEmail are the same --------- //
         if (!newEmail.equals(confirmEmail)) {
+            reject("Emails do not match");
             return;
         }
         // ------------------------------------------------------------------------- //

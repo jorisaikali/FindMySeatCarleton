@@ -20,7 +20,7 @@ public class RegisterFragment extends Fragment {
 
     private RegisterViewModel mViewModel;
     private Button registerButton;
-    private EditText usernameEditText, passwordEditText, emailEditText;
+    private EditText usernameEditText, passwordEditText, confirmPasswordEditText, emailEditText, confirmEmailEditText;
 
     public static RegisterFragment newInstance() {
         return new RegisterFragment();
@@ -34,16 +34,20 @@ public class RegisterFragment extends Fragment {
         registerButton = view.findViewById(R.id.registerButton);
         usernameEditText = view.findViewById(R.id.usernameEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
+        confirmPasswordEditText = view.findViewById(R.id.confirmPasswordEditText);
         emailEditText = view.findViewById(R.id.emailEditText);
+        confirmEmailEditText = view.findViewById(R.id.confirmEmailEditText);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+                String confirmPassword = confirmPasswordEditText.getText().toString();
                 String email = emailEditText.getText().toString();
+                String confirmEmail = confirmEmailEditText.getText().toString();
 
-                String[] args = {"REGISTER", username, email, password};
+                String[] args = {username, password, confirmPassword, email, confirmEmail};
                 mViewModel.setArgs(args);
 
                 mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
