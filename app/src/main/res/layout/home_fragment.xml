@@ -7,6 +7,27 @@
     tools:context=".View.HomeFragment"
     android:background="@color/windowBackground">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_background_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:alpha=".65"
+        android:background="#000000"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="fill_parent"
@@ -53,6 +74,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="8dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:contentDescription="@string/updateDesc"
         android:src="@drawable/home_screen_add"
         app:layout_constraintBottom_toTopOf="@+id/findButton"
@@ -60,7 +83,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        android:background="@color/buttonPrimary"/>
+        android:background="@drawable/opaque_with_border_round_button"/>
 
     <ImageButton
         android:id="@+id/findButton"
@@ -70,6 +93,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="128dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:contentDescription="@string/findDesc"
         android:src="@drawable/home_screen_find"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
@@ -78,7 +103,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        android:background="@color/buttonPrimary"/>
+        android:background="@drawable/opaque_with_border_round_button"/>
 
     <Button
         android:id="@+id/resetTestButton"
@@ -86,30 +111,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="40dp"
         android:text="Reset Test"
-        app:layout_constraintBottom_toTopOf="@+id/updateButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.202"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.692" />
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/selectWinnerTestButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="Winner"
-        app:layout_constraintBottom_toTopOf="@+id/updateButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/resetTestButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38" />
+        android:visibility="gone" />
 
 </android.support.constraint.ConstraintLayout>
