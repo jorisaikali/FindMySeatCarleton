@@ -83,7 +83,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        android:background="@drawable/opaque_with_border_round_button"/>
+        android:background="@drawable/button_white_opaque_border_round"/>
 
     <ImageButton
         android:id="@+id/findButton"
@@ -103,7 +103,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        android:background="@drawable/opaque_with_border_round_button"/>
+        android:background="@drawable/button_white_opaque_border_round"/>
 
     <Button
         android:id="@+id/resetTestButton"
