@@ -33,4 +33,13 @@
     <string name="credits">Chair icon made by Smashicons (https://smashicons.com/) from www.flaticon.com\n\nGender Neutral User from www.icons8.com\n\nCog Wheel from www.icons8.com</string>
     <string name="select_winner">Select Winner and Email</string>
     <string name="reset_entries">Reset Entries</string>
+
+    <!-- Error messages -->
+    <string name="username_length_error">Username must be between 5&#8211;25 characters</string>
+    <string name="username_already_taken_error">Username already taken</string>
+    <string name="password_not_match_error">Passwords do not match</string>
+    <string name="password_length_error">Password must be between 5&#8211;25 characters</string>
+    <string name="emails_not_match_error">Emails do not match</string>
+    <string name="email_not_valid_error">Email is not a valid email</string>
+    <string name="email_already_taken_error">Email already taken</string>
 </resources>

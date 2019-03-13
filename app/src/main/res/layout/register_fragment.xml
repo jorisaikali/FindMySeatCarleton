@@ -80,12 +80,12 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/password"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/passwordEditText"
-                app:layout_constraintTop_toBottomOf="@+id/usernameEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/usernameErrorText" />
 
             <EditText
                 android:id="@+id/passwordEditText"
@@ -124,12 +124,12 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/confirm_password"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/confirmPasswordEditText"
-                app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/passwordErrorText" />
 
             <EditText
                 android:id="@+id/confirmPasswordEditText"
@@ -171,23 +171,78 @@
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/confirm_email"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/emailEditText"
-                app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/emailErrorText" />
 
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/email"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/emailEditText"
-                app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/confirmPasswordErrorText" />
+
+            <TextView
+                android:id="@+id/usernameErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/username_length_error"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/usernameEditText"
+                app:layout_constraintTop_toBottomOf="@+id/usernameEditText"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/confirmPasswordErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password_not_match_error"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/confirmPasswordEditText"
+                app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditText"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/confirmEmailErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emails_not_match_error"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/confirmEmailEditText"
+                app:layout_constraintTop_toBottomOf="@+id/confirmEmailEditText"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/passwordErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password_length_error"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/passwordEditText"
+                app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/emailErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email_not_valid_error"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/emailEditText"
+                app:layout_constraintTop_toBottomOf="@+id/emailEditText"
+                android:visibility="gone"/>
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
