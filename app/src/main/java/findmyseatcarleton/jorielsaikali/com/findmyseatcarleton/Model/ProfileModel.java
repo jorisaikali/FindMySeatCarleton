@@ -13,6 +13,7 @@ public class ProfileModel {
     private final String TAG = "ProfileModel";
 
     private LiveData<String> result;
+    private MutableLiveData<String> rejected = new MutableLiveData<>();
     private String username, email, currentEntries, totalEntries;
 
     public ProfileModel(String username) {
@@ -33,6 +34,29 @@ public class ProfileModel {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public ProfileModel(int type) {
+        // type = 0 for reset entries
+        // type = 1 for select winner and email
+
+        String[] args = new String[1];
+
+        if (type == 0) {
+            args[0] = "RESET ENTRY";
+
+        }
+        else if (type == 1) {
+            args[0] = "SELECT WINNER";
+        }
+        else {
+            rejected.setValue("Failed");
+            result = rejected;
+            return;
+        }
+
+        Repository repository = new Repository(args);
+        result = repository.getResult();
     }
 
     public String getUsername() { return username; }

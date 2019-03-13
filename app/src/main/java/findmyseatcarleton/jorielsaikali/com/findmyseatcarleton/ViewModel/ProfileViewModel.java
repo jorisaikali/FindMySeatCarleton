@@ -28,4 +28,9 @@ public class ProfileViewModel extends ViewModel {
 
         return profileModel.getResult();
     }
+
+    public LiveData<String> getResultAdmin(int type) {
+        ProfileModel profileModel = new ProfileModel(type);
+        return profileModel.getResult();
+    }
 }

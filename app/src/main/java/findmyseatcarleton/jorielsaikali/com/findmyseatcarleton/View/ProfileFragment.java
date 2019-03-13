@@ -64,32 +64,24 @@ public class ProfileFragment extends Fragment {
         resetEntriesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                String[] args = {"RESET ENTRY"};
-                Repository r = new Repository(args);
-                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
+                mViewModel.getResultAdmin(0).observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                     }
                 });
-                */
             }
         });
 
         selectWinnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                String[] args = {"SELECT WINNER"};
-                Repository r = new Repository(args);
-                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
+                mViewModel.getResultAdmin(1).observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                     }
                 });
-                */
             }
         });
 
