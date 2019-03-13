@@ -59,12 +59,15 @@ public class LoginFragment extends Fragment {
                     mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                         @Override
                         public void onChanged(@Nullable String s) {
-                            Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-
                             if (s.equals("SUCCESSFUL LOGIN")) {
+                                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
                                 intent.putExtra("username", username);
                                 startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "Username or password is incorrect", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

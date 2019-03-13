@@ -26,8 +26,8 @@ public class LoginModel {
 
         Log.i(TAG, "salt: " + salt);
 
-        if (salt.equals("FAILED LOGIN: Username does not exist")) {
-            rejected.setValue("Username does not exist");
+        if (salt.equals("FAILED LOGIN: Username or password is incorrect")) {
+            rejected.setValue("Username or password is incorrect");
             result = rejected;
             return;
         }
