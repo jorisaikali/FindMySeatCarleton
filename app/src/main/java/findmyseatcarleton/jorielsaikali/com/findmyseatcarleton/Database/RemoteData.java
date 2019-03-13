@@ -91,35 +91,6 @@ public class RemoteData extends AsyncTask<String, Void, String> {
 
     }
 
-    private String serverResponseGet(String data) {
-        try {
-            URL obj = new URL(link + "?" + data);
-            Log.i(TAG, obj.toString());
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("GET");
-
-            int responseCode = con.getResponseCode();
-            Log.i(TAG, String.valueOf(responseCode));
-            if (responseCode == HttpURLConnection.HTTP_OK) { // success
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                return response.toString();
-            }
-
-            return "RemoteData: Failed Get Request";
-
-        } catch (Exception e) {
-            return "Exception: " + e.getMessage();
-        }
-    }
-
     private String serverResponsePost(String data) {
         try {
             // ---------- Opening connection to link ---------- //
@@ -227,7 +198,7 @@ public class RemoteData extends AsyncTask<String, Void, String> {
     }
 
     private String update(String[] args) {
-        // for updating, we need to GET a 'update', 'tableID', 'status'
+        // for updating, we need to POST a 'update', 'tableID', 'status'
         try {
             // ----------- Getting data passed ----------- //
             String tableID = args[1];
@@ -240,7 +211,7 @@ public class RemoteData extends AsyncTask<String, Void, String> {
             data += "&" + URLEncoder.encode("status", "UTF-8") + "=" + URLEncoder.encode(status, "UTF-8");
             // ------------------------------------ //
 
-            return serverResponseGet(data);
+            return serverResponsePost(data);
 
         } catch (Exception e) {
             return "Exception: " + e.getMessage();
