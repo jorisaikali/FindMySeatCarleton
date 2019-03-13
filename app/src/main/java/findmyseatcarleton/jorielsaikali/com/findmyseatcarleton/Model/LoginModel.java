@@ -1,6 +1,7 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Model;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import java.security.NoSuchAlgorithmException;
@@ -14,6 +15,7 @@ public class LoginModel {
 
     private EncryptionHelper encryptHelper = new EncryptionHelper();
     private LiveData<String> result;
+    private MutableLiveData<String> rejected = new MutableLiveData<>();
 
     public LoginModel(String[] args) throws NoSuchAlgorithmException {
         // ----------- Get salt from remote data ------------ //
@@ -21,6 +23,14 @@ public class LoginModel {
         Repository getSaltRepo = new Repository(getSaltArgs);
         String salt = getSaltRepo.getResult().getValue().replace("\"", "");
         // -------------------------------------------------- //
+
+        Log.i(TAG, "salt: " + salt);
+
+        if (salt.equals("FAILED LOGIN: Username does not exist")) {
+            rejected.setValue("Username does not exist");
+            result = rejected;
+            return;
+        }
 
         // ---------- Encrypt password user entered with salt ------------ //
         String encryptedPassword = encrypt(args[2], salt);

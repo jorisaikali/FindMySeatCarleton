@@ -35,6 +35,13 @@ public class RegisterModel {
     }
 
     private void runRegisterUser(String username, String password, String confirmPassword, String email, String confirmEmail) {
+        // --------- check if any fields are empty ---------- //
+        if (checkFieldsEmpty(new String[]{username, password, confirmPassword, email, confirmEmail})) {
+            reject("All fields are required");
+            return;
+        }
+        // -------------------------------------------------- //
+
         // ----------- Check if password and confirmPassword are the same ------------ //
         if (!password.equals(confirmPassword)) {
             reject("Passwords do not match");
@@ -77,6 +84,16 @@ public class RegisterModel {
     private void sendToRepository(String[] args) {
         Repository repository = new Repository(args);
         result = repository.getResult();
+    }
+
+    private boolean checkFieldsEmpty(String[] fields) {
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i].equals("")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private String[] encrypt(String data) throws NoSuchAlgorithmException {
