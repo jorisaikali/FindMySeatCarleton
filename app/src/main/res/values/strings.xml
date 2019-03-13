@@ -31,4 +31,6 @@
     <string name="confirm_email">Confirm Email</string>
     <string name="submit">Submit</string>
     <string name="credits">Chair icon made by Smashicons (https://smashicons.com/) from www.flaticon.com\n\nGender Neutral User from www.icons8.com\n\nCog Wheel from www.icons8.com</string>
+    <string name="select_winner">Select Winner and Email</string>
+    <string name="reset_entries">Reset Entries</string>
 </resources>

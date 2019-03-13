@@ -32,10 +32,6 @@ public class HomeFragment extends Fragment {
     private ImageButton settingsButton, profileButton;
     private ImageButton updateButton, findButton;
 
-    // -------------------- Testing ------------------- //
-    private Button testResetEntryButton, testSelectWinnerButton;
-    // ------------------------------------------------ //
-
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -50,11 +46,6 @@ public class HomeFragment extends Fragment {
 
         settingsButton = view.findViewById(R.id.settingsButton);
         profileButton = view.findViewById(R.id.profileButton);
-
-        // -------------------- testing -------------------- //
-        testResetEntryButton = view.findViewById(R.id.resetTestButton);
-        testSelectWinnerButton = view.findViewById(R.id.selectWinnerTestButton);
-        // ------------------------------------------------- //
 
         settingsButton.setBackgroundColor(Color.TRANSPARENT);
         profileButton.setBackgroundColor(Color.TRANSPARENT);
@@ -99,38 +90,6 @@ public class HomeFragment extends Fragment {
                         .commit();
             }
         });
-
-        // -------------------- testing -------------------- //
-        testResetEntryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] args = {"RESET ENTRY"};
-                Repository r = new Repository(args);
-                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
-                    @Override
-                    public void onChanged(@Nullable String s) {
-                        Log.i(TAG, "s: " + s);
-                        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-        testSelectWinnerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] args = {"SELECT WINNER"};
-                Repository r = new Repository(args);
-                r.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
-                    @Override
-                    public void onChanged(@Nullable String s) {
-                        Log.i(TAG, "s: " + s);
-                        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-        // ------------------------------------------------- //
 
         return view;
     }
