@@ -42,4 +42,5 @@
     <string name="emails_not_match_error">Emails do not match</string>
     <string name="email_not_valid_error">Email is not a valid email</string>
     <string name="email_already_taken_error">Email already taken</string>
+    <string name="old_password_no_match_error">Password is incorrect</string>
 </resources>

@@ -16,6 +16,7 @@ public class ProfileSettingsModel {
     private EncryptionHelper encryptionHelper = new EncryptionHelper();
     private LiveData<String> result;
     private MutableLiveData<String> rejected = new MutableLiveData<>();
+    private String errors = "";
 
     public ProfileSettingsModel(String[] args, String type) {
         // if type = PASSWORD
@@ -40,7 +41,6 @@ public class ProfileSettingsModel {
         }
         else {
             result = rejected;
-            return;
         }
         // ------------------------------------------------------------------- //
     }
@@ -48,12 +48,20 @@ public class ProfileSettingsModel {
     public LiveData<String> getResult() { return result; }
 
     private void runChangePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
+        /*
         // --------- Check if newPassword and confirmPassword are the same --------- //
         if (!newPassword.equals(confirmPassword)) {
             reject("Passwords do not match");
             return;
         }
-        // ------------------------------------------------------------------------- //
+        // ------------------------------------------------------------------------- //*/
+
+        validatePasswordFields(oldPassword, newPassword, confirmPassword);
+        if (!errors.equals("")) {
+            errors = errors.substring(0, errors.length() - 1);
+            reject(errors);
+            return;
+        }
 
         // --------- Get Salt from Repository using username --------- //
         String[] getSaltArgs = {"GET SALT", username};
@@ -93,12 +101,19 @@ public class ProfileSettingsModel {
     }
 
     private void runChangeEmail(String username, String newEmail, String confirmEmail) {
-        // --------- Check if newEmail and confirmEmail are the same --------- //
+        /*// --------- Check if newEmail and confirmEmail are the same --------- //
         if (!newEmail.equals(confirmEmail)) {
             reject("Emails do not match");
             return;
         }
-        // ------------------------------------------------------------------------- //
+        // ------------------------------------------------------------------------- //*/
+
+        validateEmailFields(newEmail, confirmEmail);
+        if (!errors.equals("")) {
+            errors = errors.substring(0, errors.length() - 1);
+            reject(errors);
+            return;
+        }
 
         // ----- Send newEmail to Repository to update users email to new email ----- //
         String[] newEmailArgs = {"UPDATE EMAIL", username, newEmail};
@@ -121,6 +136,72 @@ public class ProfileSettingsModel {
 
         result = repository.getResult();
         return null;
+    }
+
+    private boolean checkFieldsEmpty(String[] fields) {
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i].equals("")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void validatePasswordFields(String oldPassword, String password, String confirmPassword) {
+        // --------- check if any fields are empty ---------- //
+        if (checkFieldsEmpty(new String[]{oldPassword, password, confirmPassword})) {
+            errors += "All fields are required;";
+        }
+        // -------------------------------------------------- //
+
+        // ---------- Check if oldPassword is between 5-25 characters ------------ //
+        if (oldPassword.length() < 5 || oldPassword.length() > 25) {
+            errors += "Password must be between 5-25 characters;";
+        }
+        // -------------------------------------------------------------------- //
+
+        // ----------- Check if password and confirmPassword are the same ------------ //
+        if (!password.equals(confirmPassword)) {
+            errors += "Passwords do not match;";
+        }
+        // --------------------------------------------------------------------------- //
+
+        // ------------- Check if password is between 5-25 characters ------------- //
+        if (password.length() < 5 || password.length() > 25) {
+            errors += "Password must be between 5-25 characters;";
+        }
+        // ------------------------------------------------------------------------ //
+    }
+
+    private void validateEmailFields(String newEmail, String confirmEmail) {
+        // --------- check if any fields are empty ---------- //
+        if (checkFieldsEmpty(new String[]{newEmail, confirmEmail})) {
+            errors += "All fields are required;";
+        }
+        // -------------------------------------------------- //
+
+        // ----------- Check if email and confirmEmail are the same ------------ //
+        if (!newEmail.equals(confirmEmail)) {
+            errors += "Emails do not match;";
+        }
+        // --------------------------------------------------------------------- //
+
+        // ----------- Check if email contains one @ and at least one . ----------- //
+        int periodCount = 0;
+
+        if (newEmail.contains("@")) {
+            for (int i = newEmail.indexOf("@"); i < newEmail.length(); i++) {
+                if (newEmail.charAt(i) == '.') {
+                    periodCount++;
+                }
+            }
+        }
+
+        if (!newEmail.contains("@") || periodCount == 0) {
+            errors += "Email is not valid;";
+        }
+        // ------------------------------------------------------------------------ //
     }
 
     private String encrypt(String data, String salt) {
