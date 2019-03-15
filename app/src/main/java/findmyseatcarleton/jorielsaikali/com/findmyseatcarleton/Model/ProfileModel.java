@@ -17,29 +17,41 @@ public class ProfileModel {
     private String username, email, currentEntries, totalEntries;
 
     public ProfileModel(String username) {
+        // ----------- Getting profile data from Repository using username ----------- //
         String[] args = {"GET PROFILE DATA", username};
         Repository repository = new Repository(args);
         String profileJSON = repository.getResult().getValue();
+        // --------------------------------------------------------------------------- //
 
+        // -------- Extracting data from JSONObject -------- //
         try {
             JSONObject jsonObject = new JSONObject(profileJSON);
+
+            // ------- Data extracted ------- //
             this.username = MainActivity.username;
             email = jsonObject.getString("email");
             currentEntries = jsonObject.getString("entries");
             totalEntries = jsonObject.getString("total_entries");
+            // ------------------------------ //
 
+            // --------- If successful, notify ProfileFragment of success --------- //
             MutableLiveData<String> response = new MutableLiveData<>();
             response.setValue("SUCCESS");
             result = response;
+            // -------------------------------------------------------------------- //
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        // ------------------------------------------------- //
     }
 
     public ProfileModel(int type) {
+        // This constructor is only for admin use
+
         // type = 0 for reset entries
         // type = 1 for select winner and email
 
+        // ------------ Setting args to be passed to Repository ---------- //
         String[] args = new String[1];
 
         if (type == 0) {
@@ -54,9 +66,12 @@ public class ProfileModel {
             result = rejected;
             return;
         }
+        // ---------------------------------------------------------------- //
 
+        // ---------- Sending to Repository and getting response ---------- //
         Repository repository = new Repository(args);
-        result = repository.getResult();
+        result = repository.getResult(); // triggers observe in ProfileFragment
+        // ---------------------------------------------------------------- //
     }
 
     public String getUsername() { return username; }

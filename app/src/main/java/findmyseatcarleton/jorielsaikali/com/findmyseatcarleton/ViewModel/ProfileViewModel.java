@@ -12,8 +12,6 @@ public class ProfileViewModel extends ViewModel {
 
     public void setUsername(String username) { this.username = username; }
     public void setEmail(String email) { this.email = email; }
-    public void setCurrentEntries(String currentEntries) { this.currentEntries = currentEntries; }
-    public void setTotalEntries(String totalEntries) { this.totalEntries = totalEntries; }
 
     public String getEmail() { return email; }
     public String getCurrentEntries() { return currentEntries; }

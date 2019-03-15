@@ -33,6 +33,7 @@ public class ProfileFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
 
+        // ----------- Finding all components ----------- //
         usernameTextView = view.findViewById(R.id.usernameTextView);
         emailTextView = view.findViewById(R.id.emailTextView);
         currentEntriesTextView = view.findViewById(R.id.currentEntriesTextView);
@@ -40,7 +41,9 @@ public class ProfileFragment extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
         resetEntriesButton = view.findViewById(R.id.resetEntriesButton);
         selectWinnerButton = view.findViewById(R.id.selectWinnerButton);
+        // ---------------------------------------------- //
 
+        // ----------- If user is admin, display admin-only buttons ---------- //
         if (MainActivity.username.equals("admin")) {
             resetEntriesButton.setVisibility(View.VISIBLE);
             selectWinnerButton.setVisibility(View.VISIBLE);
@@ -49,18 +52,23 @@ public class ProfileFragment extends Fragment {
             resetEntriesButton.setVisibility(View.GONE);
             selectWinnerButton.setVisibility(View.GONE);
         }
+        // ------------------------------------------------------------------- //
 
+        // ------------------ LOGOUT BUTTON LISTENER -------------------- //
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.username = "";
+                MainActivity.username = ""; // set username the empty
 
+                // send user back to login screen without allowing back button to bring them back
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
+        // -------------------------------------------------------------- //
 
+        // ------------------ RESET ENTRIES BUTTON LISTENER -------------------- //
         resetEntriesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +80,9 @@ public class ProfileFragment extends Fragment {
                 });
             }
         });
+        // --------------------------------------------------------------------- //
 
+        // ------------------ SELECT WINNER BUTTON LISTENER -------------------- //
         selectWinnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +94,7 @@ public class ProfileFragment extends Fragment {
                 });
             }
         });
+        // --------------------------------------------------------------------- //
 
         return view;
     }
@@ -93,37 +104,46 @@ public class ProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity()).get(ProfileViewModel.class);
 
-        mViewModel.setUsername(MainActivity.username);
+        mViewModel.setUsername(MainActivity.username); // set username so ProfileViewModel can use it
 
+        // ----------------- Observe result LiveData from ProfileViewModel --------------- //
         mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                //Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
-
+                // if result was a success
                 if (s.equals("SUCCESS")) {
+
+                    // ------------ Parsing entries ------------- //
+                    String parsedCurrentEntries = parseEntries(currentEntriesTextView.getText().toString(), mViewModel.getCurrentEntries());
+                    String parsedTotalEntries = parseEntries(totalEntriesTextView.getText().toString(), mViewModel.getTotalEntries());
+                    // ------------------------------------------ //
+
+                    // ---------- Display texts to user ---------- //
                     usernameTextView.setText(MainActivity.username);
                     emailTextView.setText(mViewModel.getEmail());
-
-                    String tempCurrentEntries = currentEntriesTextView.getText().toString();
-                    int indexOfColon = tempCurrentEntries.indexOf(":");
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(tempCurrentEntries.substring(0, indexOfColon+1));
-                    sb.append(" ");
-                    sb.append(mViewModel.getCurrentEntries());
-                    currentEntriesTextView.setText(sb.toString());
-
-                    String tempTotalEntries = totalEntriesTextView.getText().toString();
-                    indexOfColon = tempTotalEntries.indexOf(":");
-                    sb = new StringBuilder();
-                    sb.append(tempTotalEntries.substring(0, indexOfColon+1));
-                    sb.append(" ");
-                    sb.append(mViewModel.getTotalEntries());
-                    totalEntriesTextView.setText(sb.toString());
+                    currentEntriesTextView.setText(parsedCurrentEntries);
+                    totalEntriesTextView.setText(parsedTotalEntries);
+                    // ------------------------------------------- //
                 }
-
+                // if result was not a success, display an error message
+                else {
+                    Toast.makeText(getActivity(), "Error has occurred", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
+        // ------------------------------------------------------------------------------ //
     }
 
+    private String parseEntries(String entries, String entriesAmount) {
+        // entries are formatted as "Current Entries: X" and "Total Entries: Y"
+        // we have to get the index of the : so we can replace the number after it
+        int indexOfColon = entries.indexOf(":");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(entries.substring(0, indexOfColon+1));
+        sb.append(" ");
+        sb.append(entriesAmount);
+
+        return sb.toString();
+    }
 }
