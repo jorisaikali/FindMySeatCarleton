@@ -30,8 +30,7 @@ public class RegisterModel {
         // args[3] = users email
         // args[4] = users confirmed email
 
-        rejected.setValue("REJECTED");
-
+        rejected.setValue("REJECTED"); // set default value of rejected to "REJECTED"
         runRegisterUser(args[0], args[1], args[2], args[3], args[4]);
     }
 
@@ -40,17 +39,20 @@ public class RegisterModel {
     }
 
     private void runRegisterUser(String username, String password, String confirmPassword, String email, String confirmEmail) {
+        // --------------- Validating fields ----------------- //
         validateFields(username, password, confirmPassword, email, confirmEmail);
         if (!errors.equals("")) {
-            errors = errors.substring(0, errors.length() - 1);
+            // Error has occurred, do not continue
+            errors = errors.substring(0, errors.length() - 1); // errors has a ; at the end of it, so this gets rid of it
             reject(errors);
             return;
         }
+        // --------------------------------------------------- //
 
         // ---------- Encrypt password user entered with generated salt ---------- //
         String[] encryptedData = null;
         try {
-            encryptedData = encrypt(password);
+            encryptedData = encrypt(password); // returns string array where index 0 is the hash, and 1 is the salt
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -69,44 +71,42 @@ public class RegisterModel {
 
     private void reject(String message) {
         rejected.setValue(message);
-        result = rejected;
+        result = rejected; // triggers the observe from RegisterFragment
     }
 
     private void sendToRepository(String[] args) {
         Repository repository = new Repository(args);
-        LiveData<String> serverResponse = repository.getResult();
+        LiveData<String> serverResponse = repository.getResult(); // gets the response from Repository
 
-        if (serverResponse.getValue().equals("SUCCESS")) {
-            result = serverResponse;
+        if (serverResponse.getValue().equals("SUCCESS")) { // if the response was a SUCCESS
+            result = serverResponse; // trigger the observe from RegisterFragment about the success
             return;
         }
 
-        MutableLiveData<String> parseResponse = parseErrors(serverResponse.getValue());
-        Log.i(TAG, "parseResponse: " + parseResponse.getValue());
-        result = parseResponse;
+        MutableLiveData<String> parseResponse = parseErrors(serverResponse.getValue()); // if the response was not a SUCCESS, parse the errors
+        result = parseResponse; // triggers the observe from RegisterFragment with the errors
     }
 
     private MutableLiveData<String> parseErrors(String errors) {
         MutableLiveData<String> parsedErrors = new MutableLiveData<>();
 
+        // ---------- Formatting JSON array ---------- //
         StringBuilder sb = new StringBuilder();
         sb.append("{\"server_response\":").append(errors).append("}");
         String newErrorsString = sb.toString();
-
-        Log.i(TAG, newErrorsString);
+        // ------------------------------------------- //
 
         try {
+            // ------------- Iterate through JSONArray --------------- //
             JSONObject jsonObject = new JSONObject(newErrorsString);
             JSONArray jsonArray = jsonObject.getJSONArray("server_response");
 
             int index = 0;
             while (index < jsonArray.length()) {
-                //Log.i(TAG, jsonArray.getString(index).substring(8));
-                Log.i(TAG, "errors (before): " + errors);
-                this.errors += jsonArray.getString(index).substring(8) + ";";
-                Log.i(TAG, "errors (after): " + errors);
+                this.errors += jsonArray.getString(index).substring(8) + ";"; // adding each error to this.errors with ; (will be used with split(";"))
                 index++;
             }
+            // ------------------------------------------------------- //
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -118,12 +118,15 @@ public class RegisterModel {
     }
 
     private boolean checkFieldsEmpty(String[] fields) {
+        // ------------ Iterate through all given fields ------------ //
         for (int i = 0; i < fields.length; i++) {
             if (fields[i].equals("")) {
-                return true;
+                return true; // return true if a field is empty
             }
         }
+        // ---------------------------------------------------------- //
 
+        // otherwise return false
         return false;
     }
 

@@ -36,6 +36,7 @@ public class RegisterFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.register_fragment, container, false);
 
+        // --------------- Finding all components --------------- //
         registerButton = view.findViewById(R.id.registerButton);
         usernameEditText = view.findViewById(R.id.usernameEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
@@ -48,73 +49,54 @@ public class RegisterFragment extends Fragment {
         confirmPasswordErrorText = view.findViewById(R.id.confirmPasswordErrorText);
         emailErrorText = view.findViewById(R.id.emailErrorText);
         confirmEmailErrorText = view.findViewById(R.id.confirmEmailErrorText);
+        // ----------------------------------------------------- //
 
+        //-------------- REGISTER BUTTON LISTENER -------------- //
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 1. Clear all error messages from previous register attempt (even if non-existent)
                 clearAllErrorTexts();
 
+                // 2. Get all user given data from input fields
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String confirmPassword = confirmPasswordEditText.getText().toString();
                 String email = emailEditText.getText().toString();
                 String confirmEmail = confirmEmailEditText.getText().toString();
 
+                // 3. Set args for RegisterViewModel to use
                 String[] args = {username, password, confirmPassword, email, confirmEmail};
                 mViewModel.setArgs(args);
 
+                // 4. Observe when the RegisterViewModel result LiveData changes
                 mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
-                        Log.i(TAG, s);
+                        // ======= Change happened in RegisterViewModel ======= //
 
+                        // 4.1) if the result was SUCCESS
                         if (s.equals("SUCCESS")) {
-                            Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show(); // display toast to user with success
 
+                            // Change fragment back to LoginFragment
                             LoginFragment loginFragment = new LoginFragment();
                             getActivity().getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.loginLayout, loginFragment)
                                     .addToBackStack(null)
                                     .commit();
                         }
+                        // 4.2) if the result was not successful
                         else {
+                            // split the error string but ; and display
                             String[] errors = s.split(";");
-
-                            for (int i = 0; i < errors.length; i++) {
-                                if (errors[i].equals("Username already taken")) {
-                                    usernameErrorText.setText(getResources().getString(R.string.username_already_taken_error));
-                                    usernameErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Username must be between 5-25 characters")) {
-                                    usernameErrorText.setText(getResources().getString(R.string.username_length_error));
-                                    usernameErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Passwords do not match")) {
-                                    confirmPasswordErrorText.setText(getResources().getString(R.string.password_not_match_error));
-                                    confirmPasswordErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Password must be between 5-25 characters")) {
-                                    passwordErrorText.setText(getResources().getString(R.string.password_length_error));
-                                    passwordErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Email already taken")) {
-                                    emailErrorText.setText(getResources().getString(R.string.email_already_taken_error));
-                                    emailErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Emails do not match")) {
-                                    confirmEmailErrorText.setText(getResources().getString(R.string.emails_not_match_error));
-                                    confirmEmailErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Email is not valid")) {
-                                    emailErrorText.setText(getResources().getString(R.string.email_not_valid_error));
-                                    emailErrorText.setVisibility(View.VISIBLE);
-                                }
-                            }
+                            displayErrors(errors);
                         }
                     }
                 });
             }
         });
+        // ----------------------------------------------------- //
 
         return view;
     }
@@ -131,6 +113,42 @@ public class RegisterFragment extends Fragment {
         confirmPasswordErrorText.setVisibility(View.GONE);
         emailErrorText.setVisibility(View.GONE);
         confirmEmailErrorText.setVisibility(View.GONE);
+    }
+
+    private void displayErrors(String[] errors) {
+        // Iterate through each error in errors and set and display corresponding field
+        for (String error: errors) {
+            switch (error) {
+                case "Username already taken":
+                    usernameErrorText.setText(getResources().getString(R.string.username_already_taken_error));
+                    usernameErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Username must be between 5-25 characters":
+                    usernameErrorText.setText(getResources().getString(R.string.username_length_error));
+                    usernameErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Passwords do not match":
+                    confirmPasswordErrorText.setText(getResources().getString(R.string.password_not_match_error));
+                    confirmPasswordErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Password must be between 5-25 characters":
+                    passwordErrorText.setText(getResources().getString(R.string.password_length_error));
+                    passwordErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Email already taken":
+                    emailErrorText.setText(getResources().getString(R.string.email_already_taken_error));
+                    emailErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Emails do not match":
+                    confirmEmailErrorText.setText(getResources().getString(R.string.emails_not_match_error));
+                    confirmEmailErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Email is not valid":
+                    emailErrorText.setText(getResources().getString(R.string.email_not_valid_error));
+                    emailErrorText.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
     }
 
 }
