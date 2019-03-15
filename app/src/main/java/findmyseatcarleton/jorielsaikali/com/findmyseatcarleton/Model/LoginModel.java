@@ -17,35 +17,73 @@ public class LoginModel {
     private LiveData<String> result;
     private MutableLiveData<String> rejected = new MutableLiveData<>();
 
-    public LoginModel(String[] args) throws NoSuchAlgorithmException {
-        // ----------- Get salt from remote data ------------ //
-        String[] getSaltArgs = {"GET SALT", args[1]};
+    public LoginModel(String[] args) {
+        // args[0] = username
+        // args[1] = password
+
+        // ------------ Checking if all fields filled in ------------ //
+        if (checkFieldsEmpty(args)) {
+            reject("All fields required");
+            return;
+        }
+        // ---------------------------------------------------------- //
+
+        // ----------- Get salt from Repository ------------ //
+        String[] getSaltArgs = {"GET SALT", args[0]};
         Repository getSaltRepo = new Repository(getSaltArgs);
         String salt = getSaltRepo.getResult().getValue().replace("\"", "");
         // -------------------------------------------------- //
 
-        Log.i(TAG, "salt: " + salt);
-
+        // failed salt request returns "FAILED LOGIN: Username or password is incorrect"
         if (salt.equals("FAILED LOGIN: Username or password is incorrect")) {
-            rejected.setValue("Username or password is incorrect");
-            result = rejected;
+            // Failed getting salt (username does not exist)
+            reject("Username or password is incorrect");
             return;
         }
 
         // ---------- Encrypt password user entered with salt ------------ //
-        String encryptedPassword = encrypt(args[2], salt);
+        String encryptedPassword = null;
+        try {
+            encryptedPassword = encrypt(args[1], salt);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         // --------------------------------------------------------------- //
 
-        args[2] = encryptedPassword; // Set args[2] to encrypted password so Repository can search with new encrypted password
+        // checks if encrypting the password somehow failed
+        if (encryptedPassword == null) {
+            reject("Error occurred while logging in");
+            return;
+        }
+
+        String[] newArgs = {"LOGIN", args[0], encryptedPassword}; // setting new arguments to be passed to Repository
 
         // ------------ Getting the result of login from Repository ----------- //
-        Repository repo = new Repository(args);
-        result = repo.getResult();
+        Repository repo = new Repository(newArgs);
+        result = repo.getResult(); // triggers the observe from LoginFragment
         // -------------------------------------------------------------------- //
     }
 
     public LiveData<String> getResult() {
         return result;
+    }
+
+    private void reject(String message) {
+        rejected.setValue(message);
+        result = rejected; // triggers the observe from LoginFragment with the errors
+    }
+
+    private boolean checkFieldsEmpty(String[] fields) {
+        // ------------ Iterate through all given fields ------------ //
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i].equals("")) {
+                return true; // return true if a field is empty
+            }
+        }
+        // ---------------------------------------------------------- //
+
+        // otherwise return false
+        return false;
     }
 
     private String encrypt(String data, String salt) throws NoSuchAlgorithmException {

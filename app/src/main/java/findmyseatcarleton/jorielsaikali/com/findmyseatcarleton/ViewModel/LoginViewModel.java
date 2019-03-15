@@ -18,7 +18,7 @@ public class LoginViewModel extends ViewModel {
         this.args = args;
     }
 
-    public LiveData<String> getResult() throws NoSuchAlgorithmException {
+    public LiveData<String> getResult() {
         LoginModel loginModel = new LoginModel(this.args);
         return loginModel.getResult();
     }

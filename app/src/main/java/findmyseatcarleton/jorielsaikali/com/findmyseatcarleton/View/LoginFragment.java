@@ -34,10 +34,13 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
 
+
+        // ------------- Finding all components ------------ //
         loginButton = view.findViewById(R.id.loginButton);
         registerButton = view.findViewById(R.id.registerButton);
         usernameEditText = view.findViewById(R.id.usernameEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
+        // ------------------------------------------------- //
 
         return view;
     }
@@ -47,36 +50,43 @@ public class LoginFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
+        // ---------------------- LOGIN BUTTON LISTENER ----------------------- //
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // ---------- Getting user given data from input fields ---------- //
                 final String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                String[] args = {"LOGIN", username, password};
+                // --------------------------------------------------------------- //
+
+                String[] args = {username, password}; // setting arguments for LoginViewModel to use
                 mViewModel.setArgs(args);
 
-                try {
-                    mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
-                        @Override
-                        public void onChanged(@Nullable String s) {
-                            if (s.equals("SUCCESSFUL LOGIN")) {
-                                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
-                                intent.putExtra("username", username);
-                                startActivity(intent);
-                            }
-                            else {
-                                Toast.makeText(getActivity(), "Username or password is incorrect", Toast.LENGTH_SHORT).show();
-                            }
+                // ------------------- Observe result LiveData from LoginViewModel ------------------ //
+                mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        // If the result was a success
+                        if (s.equals("SUCCESSFUL LOGIN")) {
+                            // Start the MainActivity and pass username
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            intent.putExtra("username", username);
+                            startActivity(intent);
                         }
-                    });
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
+                        else if (s.equals("All fields required")) {
+                            Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "Username or password is incorrect", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                // ---------------------------------------------------------------------------------- //
             }
         });
+        // -------------------------------------------------------------------- //
 
+        // ---------------------- REGISTER BUTTON LISTENER ----------------------- //
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +97,7 @@ public class LoginFragment extends Fragment {
                         .commit();
             }
         });
+        // ---------------------------------------------------------------------- //
     }
 
 }
