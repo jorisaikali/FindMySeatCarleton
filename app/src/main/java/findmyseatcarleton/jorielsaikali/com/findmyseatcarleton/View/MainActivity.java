@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // username is given from LoginFragment
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             username = intent.getStringExtra("username");

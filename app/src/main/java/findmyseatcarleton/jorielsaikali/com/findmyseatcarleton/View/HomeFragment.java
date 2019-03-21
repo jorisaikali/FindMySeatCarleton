@@ -1,7 +1,5 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,22 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import java.security.NoSuchAlgorithmException;
-
-import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Database.Repository;
-import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Model.LoginModel;
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
-import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel.HomeViewModel;
 
 public class HomeFragment extends Fragment {
 
     private final String TAG = "HomeFragment";
-
-    private HomeViewModel mViewModel;
 
     private ImageButton settingsButton, profileButton;
     private ImageButton updateButton, findButton;
@@ -41,15 +30,19 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
+        // ---------------- Finding all components ----------------- //
         updateButton = view.findViewById(R.id.updateButton);
         findButton = view.findViewById(R.id.findButton);
 
         settingsButton = view.findViewById(R.id.settingsButton);
         profileButton = view.findViewById(R.id.profileButton);
+        // --------------------------------------------------------- //
 
+        // Setting background of bottom navigation bar buttons to transparent
         settingsButton.setBackgroundColor(Color.TRANSPARENT);
         profileButton.setBackgroundColor(Color.TRANSPARENT);
 
+        // -------------- UPDATE BUTTON LISTENER ---------------- //
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +50,9 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        // ------------------------------------------------------ //
 
+        // -------------- FIND BUTTON LISTENER ---------------- //
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +63,9 @@ public class HomeFragment extends Fragment {
                         .commit();
             }
         });
+        // ---------------------------------------------------- //
 
+        // ------------- PROFILE BUTTON LISTENER ------------ //
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +76,9 @@ public class HomeFragment extends Fragment {
                         .commit();
             }
         });
+        // -------------------------------------------------- //
 
+        // ------------- SETTINGS BUTTON LISTENER ------------ //
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,15 +89,8 @@ public class HomeFragment extends Fragment {
                         .commit();
             }
         });
+        // --------------------------------------------------- //
 
         return view;
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
 }
