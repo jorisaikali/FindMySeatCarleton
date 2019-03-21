@@ -28,13 +28,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        Log.i(TAG, "MAP GETTING READY");
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // coordinatesString is passed from FloorListFragment
+        // the string contains the JSON string of all latitudes and longitudes of available seats based on users search
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             coordinatesString = intent.getStringExtra("coordinatesString");
@@ -58,19 +58,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         MapViewModel mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
 
-        Log.i(TAG, "MAP READY");
-
-        mapViewModel.setData(googleMap, coordinatesString);
-        mMap = mapViewModel.getGoogleMap();
+        mapViewModel.setData(googleMap, coordinatesString); // set data for google map
+        mMap = mapViewModel.getGoogleMap(); // retrieve updated google map
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
-        /*mMap = googleMap;
-
-        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 }

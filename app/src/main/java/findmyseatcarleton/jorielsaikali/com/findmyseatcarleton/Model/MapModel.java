@@ -23,9 +23,9 @@ public class MapModel {
 
     public MapModel(GoogleMap gm, String coordinatesString) {
         googleMap = gm;
-        markerCoordinates = parseCoordinatesString(coordinatesString);
-        addAllMarkers(markerCoordinates);
-        shiftCamera(buildingCoordinates);
+        markerCoordinates = parseCoordinatesString(coordinatesString); // parses JSON string of latitudes and longitudes
+        addAllMarkers(markerCoordinates); // add all markers to google maps based on parsed marker lat and longs
+        shiftCamera(buildingCoordinates); // centers google map on building latitude and longitude
     }
 
     public GoogleMap getGoogleMap() { return googleMap; }
@@ -37,18 +37,18 @@ public class MapModel {
 
     private void addAllMarkers(List<LatLng> markers) {
         for (int i = 0; i < markers.size(); i++) {
-            Log.i(TAG, "Adding marker");
             googleMap.addMarker(new MarkerOptions().position(markers.get(i)));
         }
     }
 
     private List<LatLng> parseCoordinatesString(String coordinatesString) {
-        // format coordinatesString will come in
+        // format coordinatesString will come in (this is an example)
         // [
         //      {"latitude":"45.382113","longitude":"-75.697416"},
         //      {"id":"1","status":"1","number_of_seats":"2","building_ID":"8","on_floor":"Level 1","latitude":"45.382220","longitude":"-75.697110"},
         //      {"id":"4","status":"1","number_of_seats":"2","building_ID":"8","on_floor":"Level 1","latitude":"45.382171","longitude":"-75.697103"},
-        //      {"id":"7","status":"1","number_of_seats":"2","building_ID":"8","on_floor":"Level 1","latitude":"45.382132","longitude":"-75.697183"}
+        //      {"id":"7","status":"1","number_of_seats":"2","building_ID":"8","on_floor":"Level 1","latitude":"45.382132","longitude":"-75.697183"},
+        //      ...
         // ]
 
         List<LatLng> coordinates = new ArrayList<>();
@@ -58,38 +58,28 @@ public class MapModel {
         sb.append("{\"server_response\":").append(coordinatesString).append("}");
         String newCoordinatesString = sb.toString();
 
-        //Log.i(TAG, "JSON: " + newCoordinatesString);
-
         // 2. Use JSON classes to parse JSON into 'latitude' and 'longitude' variables
         try {
             JSONObject jsonObject = new JSONObject(newCoordinatesString);
             JSONArray jsonArray = jsonObject.getJSONArray("server_response");
 
-            //Log.i(TAG, "jsonArray.length: " + jsonArray.length());
-
             int index = 0;
             while (index < jsonArray.length()) {
-                //Log.i(TAG, "index: " + index);
-
                 Double lat = 0.0, lng = 0.0;
 
                 JSONObject jo = jsonArray.getJSONObject(index); // gets the first object in the array
                 lat = Double.valueOf(jo.getString("latitude"));
                 lng = Double.valueOf(jo.getString("longitude"));
 
-                Log.i(TAG, "jo.toString(): " + jo.toString());
-
                 // 3. Create new LatLng based on the latitude and longitude
                 if (lat != 0.0 && lng != 0.0) {
                     LatLng marker = new LatLng(lat, lng);
 
                     if (index == 0) {
-                        Log.i(TAG, "Building Coordinate");
                         buildingCoordinates = marker;
                     }
                     else {
                         // 4. Push to coordinates ArrayList
-                        Log.i(TAG, "Table Coordinate");
                         coordinates.add(marker);
                     }
                 }
@@ -102,10 +92,6 @@ public class MapModel {
         }
 
         // 5. Return coordinates
-        for (int i = 0; i < coordinates.size(); i++) {
-            Log.i(TAG, "coordinates.get(" + i + "):" + coordinates.get(i).toString());
-        }
-
         return coordinates;
     }
 }

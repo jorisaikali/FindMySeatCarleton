@@ -16,7 +16,6 @@ public class MapViewModel extends ViewModel {
     private List<LatLng> markerCoordinates = new ArrayList<>();
 
     public GoogleMap getGoogleMap() { return googleMap; }
-    public List<LatLng> getMarkerCoordinates() { return markerCoordinates; }
 
     public void setData(GoogleMap gm, String coordinatesString) {
         mapModel = new MapModel(gm, coordinatesString);
