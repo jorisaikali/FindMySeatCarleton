@@ -17,7 +17,6 @@ public class SeatAmountFragment extends Fragment {
 
     private FindSeatViewModel mViewModel;
     private ImageButton oneSeatButton, twoSeatButton, threeSeatButton, fourSeatButton;
-    private String selectedAmount;
 
     public static SeatAmountFragment newInstance() {
         return new SeatAmountFragment();
@@ -28,15 +27,19 @@ public class SeatAmountFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.seat_amount_fragment, container, false);
 
+        // ---------- Finding all components ---------- //
         oneSeatButton = view.findViewById(R.id.oneSeatButton);
         twoSeatButton = view.findViewById(R.id.twoSeatButton);
         threeSeatButton = view.findViewById(R.id.threeSeatButton);
         fourSeatButton = view.findViewById(R.id.fourSeatButton);
+        // ------------------------------------------- //
 
+        // ---------- Settings onClick listeners ----------- //
         oneSeatButton.setOnClickListener(new ButtonListener());
         twoSeatButton.setOnClickListener(new ButtonListener());
         threeSeatButton.setOnClickListener(new ButtonListener());
         fourSeatButton.setOnClickListener(new ButtonListener());
+        // ------------------------------------------------- //
 
         return view;
     }
@@ -50,7 +53,7 @@ public class SeatAmountFragment extends Fragment {
     class ButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            mViewModel.setSeatAmount(v.getTag().toString());
+            mViewModel.setSeatAmount(v.getTag().toString()); // getting tag from button chosen (either 1, 2, 3, 4) and setting it in FindSeatViewModel
 
             BuildingListFragment buildingListFragment = new BuildingListFragment();
             getActivity().getSupportFragmentManager().beginTransaction()

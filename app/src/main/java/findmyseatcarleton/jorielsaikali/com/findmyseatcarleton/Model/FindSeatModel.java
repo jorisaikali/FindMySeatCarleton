@@ -23,6 +23,7 @@ public class FindSeatModel {
     public FindSeatModel(String type, String building) {
         String[] args;
 
+        // if type is for BUILDINGS, FLOORS, or final search (getting available tables based on search)
         if (type.equals("BUILDINGS")) {
             args = new String[2];
             args[0] = "BUILDING LIST";
@@ -38,18 +39,19 @@ public class FindSeatModel {
             args = new String[0];
         }
 
+        // ------- Creating and getting result from Repository ------ //
         Repository repository = new Repository(args);
         String resultString = repository.getResult().getValue();
+        // ---------------------------------------------------------- //
 
         // Add '{"server_response":' to the beginning of coordinatesString and "}" to the end
         StringBuilder sb = new StringBuilder();
         sb.append("{\"server_response\":").append(resultString).append("}");
         String newResultString = sb.toString();
 
-        Log.i(TAG, newResultString);
-
         List<String> results = new ArrayList<>();
 
+        // -------------- Parsing JSON --------------- //
         try {
             JSONObject jsonObject = new JSONObject(newResultString);
             JSONArray jsonArray = jsonObject.getJSONArray("server_response");
@@ -74,10 +76,7 @@ public class FindSeatModel {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        for (int i = 0; i < results.size(); i++) {
-            Log.i(TAG, "resultList.get(i): " + results.get(i));
-        }
+        // ------------------------------------------- //
 
         resultList.setValue(results);
     }

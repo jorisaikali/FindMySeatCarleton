@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -46,17 +45,22 @@ public class BuildingListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_building_list, container, false);
 
+        // -------------- Getting and setting RecyclerView ---------------- //
         RecyclerView recyclerView = view.findViewById(R.id.buildingListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
+        // ---------------------------------------------------------------- //
 
+        // -------- Creating and setting adapter ------- //
         adapter = new BuildingListAdapter();
         recyclerView.setAdapter(adapter);
+        // --------------------------------------------- //
 
+        // ----------- ADAPTER OPTION LISTENER ----------- //
         adapter.setOnItemClickListener(new BuildingListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String building) {
-                mViewModel.setBuilding(building);
+                mViewModel.setBuilding(building); // set building in FindSeatViewModel
                 FloorListFragment floorListFragment = new FloorListFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.homeLayout, floorListFragment)
@@ -64,6 +68,7 @@ public class BuildingListFragment extends Fragment {
                         .commit();
             }
         });
+        // ----------------------------------------------- //
 
         return view;
     }
@@ -73,10 +78,11 @@ public class BuildingListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity()).get(FindSeatViewModel.class);
 
+        // observe building result in FindSeatViewModel for changes
         mViewModel.getBuildingResult().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(@Nullable List<String> strings) {
-                adapter.setBuildings(strings);
+                adapter.setBuildings(strings); // sets building list in adapter
             }
         });
 

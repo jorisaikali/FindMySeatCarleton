@@ -21,22 +21,18 @@ public class FindSeatViewModel extends ViewModel {
 
     public void setSeatAmount(String seatAmount) {
         this.seatAmount.setValue(seatAmount);
-        Log.i(TAG, this.seatAmount.getValue());
     }
 
     public void setBuilding(String building) {
         this.building.setValue(building);
-        Log.i(TAG, this.building.getValue());
     }
 
     public void setFloor(String floor) {
         this.floor.setValue(floor);
-        Log.i(TAG, this.floor.getValue());
     }
 
     public LiveData<String> getResult() {
         FindSeatModel findSeatModel = new FindSeatModel(seatAmount.getValue(), building.getValue(), floor.getValue());
-        Log.i(TAG, "data for find: " + seatAmount.getValue() + ", " + building.getValue() + ", " + floor.getValue());
         return findSeatModel.getResult();
     }
 
@@ -46,7 +42,6 @@ public class FindSeatViewModel extends ViewModel {
     }
 
     public LiveData<List<String>> getFloorResult(String buildingName) {
-        Log.i(TAG, "building: " + buildingName);
         FindSeatModel findSeatModel = new FindSeatModel("FLOORS", buildingName);
         return findSeatModel.getResultList();
     }

@@ -53,55 +53,51 @@ public class FloorListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity()).get(FindSeatViewModel.class);
 
+        // Observe building from FindSeatViewModel for changes
         mViewModel.getBuilding().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                Log.i(TAG, "getBuilding.observe: " + s);
                 buildingName = s;
 
+                // ------- Find and set RecyclerView ------- //
                 RecyclerView recyclerView = getView().findViewById(R.id.floorListRecyclerView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setHasFixedSize(true);
+                // ----------------------------------------- //
 
+                // ------- Create and set adapter ------- //
                 final FloorListAdapter adapter = new FloorListAdapter();
                 recyclerView.setAdapter(adapter);
+                // -------------------------------------- //
 
-                Log.i(TAG, "buildingName: " + s);
-
+                // Observe floor result from FindSeatViewModel for changes
                 mViewModel.getFloorResult(s).observe(getViewLifecycleOwner(), new Observer<List<String>>() {
                     @Override
                     public void onChanged(@Nullable List<String> strings) {
-                        adapter.setFloors(strings);
+                        adapter.setFloors(strings); // set floors in adapter
                     }
                 });
 
+                // -------- ADAPTER OPTION LISTENER --------- //
                 adapter.setOnItemClickListener(new FloorListAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(String floor) {
-                        mViewModel.setFloor(floor);
+                        mViewModel.setFloor(floor); // set floor in FindSeatViewModel
 
+                        // Observe result in FindSeatViewModel for changes
                         mViewModel.getResult().observe(getViewLifecycleOwner(), new Observer<String>() {
                             @Override
                             public void onChanged(@Nullable String s) {
-                                Log.i(TAG, "getResult: " + s);
-
+                                // if change occurred...
                                 Intent intent = new Intent(getActivity(), MapsActivity.class);
-                                intent.putExtra("coordinatesString", s);
+                                intent.putExtra("coordinatesString", s); // all available table coordinates
                                 startActivity(intent);
                             }
                         });
                     }
                 });
+                // ----------------------------------------- //
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Log.i(TAG, "FloorListFragment ONSTART");
-
-
     }
 }
