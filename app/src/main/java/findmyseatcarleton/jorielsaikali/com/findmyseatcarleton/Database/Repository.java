@@ -1,7 +1,6 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.Database;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
 public class Repository {

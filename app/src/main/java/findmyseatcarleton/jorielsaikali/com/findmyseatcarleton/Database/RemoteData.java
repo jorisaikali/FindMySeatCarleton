@@ -24,22 +24,15 @@ public class RemoteData extends AsyncTask<String, Void, String> {
     private String link = "https://findmyseatcarleton.jorielsaikali.com/index.php";
     private MutableLiveData<String> result;
 
-    public RemoteData() {
-
-    }
+    public RemoteData() {}
 
     public LiveData<String> getResult(String[] args) {
-        for (int i = 0; i < args.length; i++) {
-            Log.i(TAG, "args: " + args[i]);
-        }
-
         if (result == null) {
             result = new MutableLiveData<>();
         }
 
         try {
             result.setValue(this.execute(args).get());
-            //Log.i(TAG, "result: " + result.getValue());
             return result;
         } catch (InterruptedException ie) {
             return null;
@@ -120,7 +113,6 @@ public class RemoteData extends AsyncTask<String, Void, String> {
 
             return sb.toString();
         } catch (Exception e) {
-            Log.i(TAG, "Exception happened in serverResponsePost");
             return "Exception: " + e.getMessage();
         }
     }
@@ -164,12 +156,9 @@ public class RemoteData extends AsyncTask<String, Void, String> {
             data += "&" + URLEncoder.encode("hash", "UTF-8") + "=" + URLEncoder.encode(hash, "UTF-8");
             // ------------------------------------ //
 
-            Log.i(TAG, "data: " + data);
-
             return serverResponsePost(data);
 
         } catch (Exception e) {
-            Log.i(TAG, "Exception happened in login");
             return "Exception: " + e.getMessage();
         }
     }
@@ -229,8 +218,6 @@ public class RemoteData extends AsyncTask<String, Void, String> {
             String data = URLEncoder.encode("addEntry", "UTF-8");
             data += "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
             // ------------------------------------ //
-
-            Log.i(TAG, "data: " + data);
 
             return serverResponsePost(data);
 
@@ -292,8 +279,6 @@ public class RemoteData extends AsyncTask<String, Void, String> {
             String data = URLEncoder.encode("floorList", "UTF-8");
             data += "&" + URLEncoder.encode("floorListBuilding", "UTF-8") + "=" + URLEncoder.encode(floorListBuilding, "UTF-8");
             // ------------------------------------ //
-
-            Log.i(TAG, "data: " + data);
 
             return serverResponsePost(data);
 
