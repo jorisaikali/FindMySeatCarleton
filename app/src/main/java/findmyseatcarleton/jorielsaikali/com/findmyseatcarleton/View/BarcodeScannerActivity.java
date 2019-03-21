@@ -1,15 +1,11 @@
 package findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.View;
 
-import android.Manifest;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.R;
 import findmyseatcarleton.jorielsaikali.com.findmyseatcarleton.ViewModel.BarcodeScannerViewModel;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -42,21 +37,23 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
 
+        // ---------- Getting saved user data on what their two most recent unique scans were ---------- //
         SharedPreferences pref = getApplicationContext().getSharedPreferences(MainActivity.username, 0);
         SharedPreferences.Editor editor = pref.edit();
 
         List<String> seenQRCodes = new ArrayList<>(Arrays.asList(pref.getString("index0", ""), pref.getString("index1", "")));
         BarcodeScannerViewModel bsViewModel = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
-        bsViewModel.setAlreadySeenQRCodes(seenQRCodes);
+        bsViewModel.setAlreadySeenQRCodes(seenQRCodes); // setting their two most recent unique scans
+        // --------------------------------------------------------------------------------------------- //
 
+        // ----- Checking if user gave permission to use camera ----- //
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkPermission()) {
-
-            }
-            else {
+            // request for permission if the user has not given permission
+            if (!checkPermission()) {
                 requestPermission();
             }
         }
+        // ---------------------------------------------------------- //
     }
 
     private boolean checkPermission() {
@@ -65,42 +62,6 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
-    }
-
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        /*
-        switch (requestCode) {
-            case REQUEST_CAMERA:
-                if (grantResults.length > 0) {
-                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted) {
-
-                    }
-                    else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(CAMERA)) {
-                                displayAlertMessage("You need to allow access to camera in order to scan QR codes", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        requestPermissions(new String[]{CAMERA}, REQUEST_CAMERA);
-                                    }
-                                });
-                                return;
-                            }
-                        }
-                    }
-                }
-                break;
-        }*/
-    }
-
-    public void displayAlertMessage(String message, DialogInterface.OnClickListener listener) {
-        new AlertDialog.Builder(BarcodeScannerActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", listener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
     }
 
     @Override
@@ -131,21 +92,25 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
 
     @Override
     public void handleResult(Result rawResult) {
+        // 1. Get text of the scan
         String scanResult = rawResult.getText();
 
+        // 2. Check if scan has FindMySeatCarleton in it (used to make sure user isn't trying to scan other codes)
         if (scanResult.contains("FindMySeatCarleton")) {
-            //Toast.makeText(this, scanResult, Toast.LENGTH_LONG).show();
-
+            // 3. Set QR data in BarcodeScannerViewModel
             final BarcodeScannerViewModel bsViewModel = ViewModelProviders.of(this).get(BarcodeScannerViewModel.class);
-            bsViewModel.setQRData(scanResult.substring(18));
+            bsViewModel.setQRData(scanResult.substring(18)); // sends data to bsViewModel without FindMySeatCarleton in it
 
+            // 4. Observe the result in bsViewModel for changes
             bsViewModel.getResult().observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(@Nullable String s) {
+                    // if the result was successful, display success to user
                     if (!s.equals("REJECTED")) {
                         Toast.makeText(BarcodeScannerActivity.this, s, Toast.LENGTH_SHORT).show();
                     }
 
+                    // 5. Save new scans to users most recent unique scans
                     SharedPreferences pref = getApplicationContext().getSharedPreferences(MainActivity.username, 0);
                     SharedPreferences.Editor editor = pref.edit();
 
@@ -154,11 +119,13 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
                     editor.putString("index1", alreadySeenQRCodes.get(1));
                     editor.commit();
 
+                    // 6. Resume the camera
                     scannerView.resumeCameraPreview(BarcodeScannerActivity.this);
 
                 }
             });
         }
+        // if FindMySeatCarleton is not in scanResult, display to the user error message
         else {
             Toast.makeText(this, "Not a valid FindMySeat QR Code", Toast.LENGTH_SHORT).show();
             scannerView.resumeCameraPreview(BarcodeScannerActivity.this);
