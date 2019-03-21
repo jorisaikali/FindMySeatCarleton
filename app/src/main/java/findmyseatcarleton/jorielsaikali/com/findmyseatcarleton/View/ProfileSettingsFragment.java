@@ -38,6 +38,7 @@ public class ProfileSettingsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile_settings_fragment, container, false);
 
+        // ------------------ Finding all components -------------------- //
         oldPasswordEditText = view.findViewById(R.id.oldPasswordEditText);
         newPasswordEditText = view.findViewById(R.id.newPasswordEditText);
         confirmPasswordEditText = view.findViewById(R.id.confirmPasswordEditText);
@@ -51,6 +52,7 @@ public class ProfileSettingsFragment extends Fragment {
         confirmPasswordErrorText = view.findViewById(R.id.confirmPasswordErrorText);
         newEmailErrorText = view.findViewById(R.id.newEmailErrorText);
         confirmEmailErrorText = view.findViewById(R.id.confirmEmailErrorText);
+        // -------------------------------------------------------------- //
 
         return view;
     }
@@ -60,98 +62,76 @@ public class ProfileSettingsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity()).get(ProfileSettingsViewModel.class);
 
+        // --------------- CHANGE PASSWORD LISTENER ------------------ //
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 1. Clear all error texts
                 clearAllErrorTexts();
 
+                // 2. Get user input
                 String oldPassword = oldPasswordEditText.getText().toString();
                 String newPassword = newPasswordEditText.getText().toString();
                 String confirmPassword = confirmPasswordEditText.getText().toString();
 
+                // 3. Set arguments for ProfileSettingsViewModel to use
                 String[] args = {MainActivity.username, oldPassword, newPassword, confirmPassword};
                 mViewModel.setArgs(args);
 
+                // 4. Observe when result in ProfileSettingsViewModel changes
                 mViewModel.getResult("PASSWORD").observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
-                        Log.i(TAG, "s: " + s);
-
+                        // if result is successful, display to the user success and empty fields
                         if (s.equals("SUCCESS")) {
                             Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                             emptyFields();
                         }
+                        // if result is unsuccessful, display error messages to user
                         else {
-                            String[] errors = s.split(";");
-
-                            for (int i = 0; i < errors.length; i++) {
-                                if (errors[i].equals("All fields are required")) {
-                                    Toast.makeText(getActivity(), errors[i], Toast.LENGTH_SHORT).show();
-                                }
-                                else if (errors[i].equals("Old password is not correct")) {
-                                    oldPasswordErrorText.setText(getResources().getString(R.string.old_password_no_match_error));
-                                    oldPasswordErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Passwords do not match")) {
-                                    confirmPasswordErrorText.setText(getResources().getString(R.string.password_not_match_error));
-                                    confirmPasswordErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Password must be between 5-25 characters")) {
-                                    newPasswordErrorText.setText(getResources().getString(R.string.password_length_error));
-                                    newPasswordErrorText.setVisibility(View.VISIBLE);
-                                }
-                            }
+                            String[] errors = s.split(";"); // each error is separated by a ;
+                            displayPasswordErrors(errors);
                         }
                     }
                 });
             }
         });
+        // ----------------------------------------------------------- //
 
+        // ----------------- CHANGE EMAIL LISTENER ------------------ //
         changeEmailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 1. Clear all error texts
                 clearAllErrorTexts();
 
+                // 2. Get user input
                 String newEmail = newEmailEditText.getText().toString();
                 String confirmEmail = confirmEmailEditText.getText().toString();
 
+                // 3. Set arguments for ProfileSettingsViewModel to use
                 String[] args = {MainActivity.username, newEmail, confirmEmail};
                 mViewModel.setArgs(args);
 
+                // 4. Observe when result in ProfileSettingsViewModel changes
                 mViewModel.getResult("EMAIL").observe(getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
-                        Log.i(TAG, "s: " + s);
-
+                        // if result is successful, display to the user success and empty fields
                         if (s.equals("SUCCESS")) {
                             Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                             emptyFields();
                         }
+                        // if result is unsuccessful, display error messages to user
                         else {
-                            String[] errors = s.split(";");
-
-                            for (int i = 0; i < errors.length; i++) {
-                                if (errors[i].equals("All fields are required")) {
-                                    Toast.makeText(getActivity(), errors[i], Toast.LENGTH_SHORT).show();
-                                }
-                                else if (errors[i].equals("FAILED CHANGE PROFILE: Error occurred while updating email")) {
-                                    newEmailErrorText.setText(getResources().getString(R.string.email_already_taken_error));
-                                    newEmailErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Emails do not match")) {
-                                    confirmEmailErrorText.setText(getResources().getString(R.string.emails_not_match_error));
-                                    confirmEmailErrorText.setVisibility(View.VISIBLE);
-                                }
-                                else if (errors[i].equals("Email is not valid")) {
-                                    newEmailErrorText.setText(getResources().getString(R.string.email_not_valid_error));
-                                    newEmailErrorText.setVisibility(View.VISIBLE);
-                                }
-                            }
+                            String[] errors = s.split(";"); // each error is separated by a ;
+                            displayEmailErrors(errors);
                         }
                     }
                 });
             }
         });
+        // --------------------------------------------------------- //
     }
 
     private void emptyFields() {
@@ -170,4 +150,49 @@ public class ProfileSettingsFragment extends Fragment {
         confirmEmailErrorText.setVisibility(View.GONE);
     }
 
+    private void displayPasswordErrors(String[] errors) {
+        // Iterate through each error in errors and set and display corresponding field
+        for (String error: errors) {
+            switch (error) {
+                case "All fields are required":
+                    Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                    break;
+                case "Old password is not correct":
+                    oldPasswordErrorText.setText(getResources().getString(R.string.old_password_no_match_error));
+                    oldPasswordErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Passwords do not match":
+                    confirmPasswordErrorText.setText(getResources().getString(R.string.password_not_match_error));
+                    confirmPasswordErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Password must be between 5-25 characters":
+                    newPasswordErrorText.setText(getResources().getString(R.string.password_length_error));
+                    newPasswordErrorText.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    }
+
+    private void displayEmailErrors(String[] errors) {
+        // Iterate through each error in errors and set and display corresponding field
+        for (String error: errors) {
+            switch (error) {
+                case "All fields are required":
+                    Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                    break;
+                case "FAILED CHANGE PROFILE: Error occurred while updating email":
+                    newEmailErrorText.setText(getResources().getString(R.string.email_already_taken_error));
+                    newEmailErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Emails do not match":
+                    confirmEmailErrorText.setText(getResources().getString(R.string.emails_not_match_error));
+                    confirmEmailErrorText.setVisibility(View.VISIBLE);
+                    break;
+                case "Email is not valid":
+                    newEmailErrorText.setText(getResources().getString(R.string.email_not_valid_error));
+                    newEmailErrorText.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    }
 }

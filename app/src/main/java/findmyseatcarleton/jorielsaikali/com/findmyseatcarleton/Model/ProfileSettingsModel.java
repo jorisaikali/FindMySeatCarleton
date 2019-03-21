@@ -48,32 +48,24 @@ public class ProfileSettingsModel {
     public LiveData<String> getResult() { return result; }
 
     private void runChangePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
-        /*
-        // --------- Check if newPassword and confirmPassword are the same --------- //
-        if (!newPassword.equals(confirmPassword)) {
-            reject("Passwords do not match");
-            return;
-        }
-        // ------------------------------------------------------------------------- //*/
-
+        // --------------- Validates password fields --------------- //
         validatePasswordFields(oldPassword, newPassword, confirmPassword);
+
+        // if an error occurred...
         if (!errors.equals("")) {
-            errors = errors.substring(0, errors.length() - 1);
-            reject(errors);
+            errors = errors.substring(0, errors.length() - 1); // the last error will have a ; at the end, this gets rid of it
+            reject(errors); // change result to errors
             return;
         }
+        // --------------------------------------------------------- //
 
         // --------- Get Salt from Repository using username --------- //
         String[] getSaltArgs = {"GET SALT", username};
         String salt = sendToRepository(getSaltArgs, true).replace("\"", "");
         // ----------------------------------------------------------- //
 
-        Log.i(TAG, "salt: " + salt);
-
         // ----- Encrypt oldPassword and send to Repository to check if the same as users old password ----- //
         String encryptedOldPassword = encrypt(oldPassword, salt);
-
-        Log.i(TAG, "encryptedOldPassword: " + encryptedOldPassword);
 
         if (encryptedOldPassword.equals("")) {
             reject("FAILED: Error occurred while encrypting old password");
@@ -101,19 +93,16 @@ public class ProfileSettingsModel {
     }
 
     private void runChangeEmail(String username, String newEmail, String confirmEmail) {
-        /*// --------- Check if newEmail and confirmEmail are the same --------- //
-        if (!newEmail.equals(confirmEmail)) {
-            reject("Emails do not match");
-            return;
-        }
-        // ------------------------------------------------------------------------- //*/
-
+        // --------------- Validates email fields --------------- //
         validateEmailFields(newEmail, confirmEmail);
+
+        // if error occurred...
         if (!errors.equals("")) {
-            errors = errors.substring(0, errors.length() - 1);
-            reject(errors);
+            errors = errors.substring(0, errors.length() - 1); // the last error will have a ; at the end, this gets rid of it
+            reject(errors); // change result to errors
             return;
         }
+        // ------------------------------------------------------ //
 
         // ----- Send newEmail to Repository to update users email to new email ----- //
         String[] newEmailArgs = {"UPDATE EMAIL", username, newEmail};
